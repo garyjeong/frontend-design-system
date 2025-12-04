@@ -155,7 +155,7 @@ export const List = ({
           $clickable={!!(item.onClick || onItemClick)}
           onClick={() => handleItemClick(item)}
           role="listitem"
-          aria-disabled={item.disabled}
+          {...(item.disabled && { 'aria-disabled': true })}
         >
           {item.avatar && (
             <AvatarWrapper>

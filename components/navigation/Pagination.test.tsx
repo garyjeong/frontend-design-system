@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { lightTheme } from '@/styles/theme';
+import lightTheme from '../../styles/theme';
 import { Pagination } from './Pagination';
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -46,7 +46,7 @@ describe('Pagination', () => {
   it('disables previous button on first page', () => {
     render(
       <TestWrapper>
-        <Pagination currentPage={1} totalPages={5} />
+        <Pagination currentPage={1} totalPages={5} onPageChange={jest.fn()} />
       </TestWrapper>,
     );
     const prevButton = screen.getByLabelText(/previous page/i);
@@ -56,7 +56,7 @@ describe('Pagination', () => {
   it('disables next button on last page', () => {
     render(
       <TestWrapper>
-        <Pagination currentPage={5} totalPages={5} />
+        <Pagination currentPage={5} totalPages={5} onPageChange={jest.fn()} />
       </TestWrapper>,
     );
     const nextButton = screen.getByLabelText(/next page/i);
@@ -79,7 +79,9 @@ describe('Pagination', () => {
         <Pagination currentPage={5} totalPages={10} maxVisible={5} />
       </TestWrapper>,
     );
-    expect(screen.getByText('...')).toBeInTheDocument();
+    // There may be multiple ellipsis, so use getAllByText
+    const ellipsis = screen.getAllByText('...');
+    expect(ellipsis.length).toBeGreaterThan(0);
   });
 
   it('does not render when totalPages is 1', () => {

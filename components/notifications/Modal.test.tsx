@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { lightTheme } from '@/styles/theme';
+import lightTheme from '../../styles/theme';
 import { Modal } from './Modal';
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -36,7 +36,7 @@ describe('Modal', () => {
     expect(screen.queryByText(/test modal/i)).not.toBeInTheDocument();
   });
 
-  it('calls onClose when close button is clicked', () => {
+  it('calls onClose when close button is clicked', async () => {
     const handleClose = jest.fn();
     render(
       <TestWrapper>
@@ -45,21 +45,35 @@ describe('Modal', () => {
     );
     const closeButton = screen.getByLabelText(/close modal/i);
     fireEvent.click(closeButton);
-    expect(handleClose).toHaveBeenCalled();
+    // Wait for async state updates (Modal uses setTimeout for animation)
+    await waitFor(() => {
+      expect(handleClose).toHaveBeenCalled();
+    }, { timeout: 500 });
   });
 
-  it('calls onClose when overlay is clicked', () => {
+  it('calls onClose when overlay is clicked', async () => {
     const handleClose = jest.fn();
-    render(
+    const { container } = render(
       <TestWrapper>
         <Modal isOpen onClose={handleClose} title="Test" closeOnOverlayClick>
           <p>Content</p>
         </Modal>
       </TestWrapper>,
     );
-    const overlay = screen.getByRole('dialog');
-    fireEvent.click(overlay);
-    expect(handleClose).toHaveBeenCalled();
+    const overlay = container.querySelector('[role="dialog"]') as HTMLElement;
+    if (overlay) {
+      // Simulate clicking directly on overlay (not modal content)
+      const clickEvent = new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+      });
+      Object.defineProperty(clickEvent, 'target', { value: overlay, enumerable: true });
+      Object.defineProperty(clickEvent, 'currentTarget', { value: overlay, enumerable: true });
+      overlay.dispatchEvent(clickEvent);
+    }
+    await waitFor(() => {
+      expect(handleClose).toHaveBeenCalled();
+    }, { timeout: 500 });
   });
 
   it('does not call onClose when overlay is clicked and closeOnOverlayClick is false', () => {
@@ -76,7 +90,7 @@ describe('Modal', () => {
     expect(handleClose).not.toHaveBeenCalled();
   });
 
-  it('calls onClose when Escape key is pressed', () => {
+  it('calls onClose when Escape key is pressed', async () => {
     const handleClose = jest.fn();
     render(
       <TestWrapper>
@@ -84,7 +98,10 @@ describe('Modal', () => {
       </TestWrapper>,
     );
     fireEvent.keyDown(document, { key: 'Escape' });
-    expect(handleClose).toHaveBeenCalled();
+    // Wait for async state updates (Modal uses setTimeout for animation)
+    await waitFor(() => {
+      expect(handleClose).toHaveBeenCalled();
+    }, { timeout: 500 });
   });
 
   it('does not call onClose when Escape is pressed and closeOnEscape is false', () => {
@@ -103,7 +120,7 @@ describe('Modal', () => {
   it('renders modal with footer', () => {
     render(
       <TestWrapper>
-        <Modal isOpen onClose={jest.fn()} title="Test" footer={<button>Footer</button>}>
+        <Modal isOpen onClose={jest.fn()} title="Test" footer={<button type="button">Footer</button>}>
           <p>Content</p>
         </Modal>
       </TestWrapper>,

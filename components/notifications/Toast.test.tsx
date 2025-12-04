@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { lightTheme } from '@/styles/theme';
+import lightTheme from '../../styles/theme';
 import { Toast } from './Toast';
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -41,7 +41,7 @@ describe('Toast', () => {
     expect(screen.getByText(/error/i)).toBeInTheDocument();
   });
 
-  it('calls onClose when close button is clicked', () => {
+  it('calls onClose when close button is clicked', async () => {
     const handleClose = jest.fn();
     render(
       <TestWrapper>
@@ -50,7 +50,9 @@ describe('Toast', () => {
     );
     const closeButton = screen.getByLabelText(/close toast/i);
     fireEvent.click(closeButton);
-    expect(handleClose).toHaveBeenCalledWith('1');
+    await waitFor(() => {
+      expect(handleClose).toHaveBeenCalledWith('1');
+    }, { timeout: 500 });
   });
 
   it('auto-closes after duration', async () => {

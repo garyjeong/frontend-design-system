@@ -24,7 +24,7 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme, $variant }) => ($variant === 'transparent' ? 'transparent' : theme.colors.background.paper)};
   border-bottom: ${({ theme, $variant }) => ($variant === 'transparent' ? 'none' : `1px solid ${theme.colors.border}`)};
-  box-shadow: ${({ theme, $variant }) => ($variant === 'transparent' ? 'none' : `0 1px 3px rgba(0, 0, 0, 0.05)`)};
+  box-shadow: ${({ $variant }) => ($variant === 'transparent' ? 'none' : '0 1px 3px rgba(0, 0, 0, 0.05)')};
   z-index: 100;
 
   ${({ $sticky }) => $sticky && `

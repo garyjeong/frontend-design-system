@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { lightTheme } from '@/styles/theme';
+import lightTheme from '../../styles/theme';
 import { List } from './List';
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -42,7 +42,7 @@ describe('List', () => {
 
   it('renders list with actions', () => {
     const itemsWithActions = [
-      { id: '1', content: <span>Item 1</span>, action: <button>Action</button> },
+      { id: '1', content: <span>Item 1</span>, action: <button type="button">Action</button> },
     ];
     render(
       <TestWrapper>

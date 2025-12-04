@@ -27,7 +27,7 @@ Key architectural decisions:
 
 *   Follow the domain-driven organization strategy as outlined in the TRD.
 *   Component files should be placed in relevant directories within the `components` folder.
-*   Page files should reside in the `pages` directory.
+*   Page files should reside in the `app` directory (Next.js App Router).
 *   Utility functions and helper files should be in the `utils` directory.
 *   Styles (global and component-specific) should be in the `styles` directory.
 
@@ -36,7 +36,7 @@ Key architectural decisions:
 *   Use absolute imports for internal modules (`@/components/Button` instead of relative paths like `../../components/Button`). Configure `@` alias in `jsconfig.json` or `tsconfig.json`.
 *   Group imports by origin (e.g., node modules, internal modules, styles).
 *   Order imports alphabetically within each group.
-*   Install dependencies using `npm install` or `yarn add`.
+*   Install dependencies using `pnpm install`.
 *   Use `devDependencies` for testing libraries and build tools.
 
 #### Error Handling Patterns
@@ -52,7 +52,7 @@ Key architectural decisions:
 
 *   Component-specific styles should be defined within the component file using Styled Components.
 *   Global styles should be defined in `styles/globals.css` or using Styled Components' `createGlobalStyle`.
-*   Theme variables should be defined in `styles/theme.js`.
+*   Theme variables should be defined in `styles/theme.ts`.
 
 #### Naming Conventions
 
@@ -74,12 +74,12 @@ Key architectural decisions:
     *   Variables: camelCase (e.g., `userName`, `productPrice`).
     *   Functions: camelCase (e.g., `getUserData`, `calculateTotal`).
     *   Components: PascalCase (e.g., `Button`, `TextField`).
-    *   Files: PascalCase or camelCase depending on the content (e.g., `Button.jsx`, `api.js`).
+    *   Files: PascalCase or camelCase depending on the content (e.g., `Button.tsx`, `api.ts`).
     *   Rationale: Consistent naming improves readability and maintainability.
 *   **Component Structure**:
     *   Functional components with hooks are preferred.
     *   Separate UI logic from data fetching/processing logic.
-    *   Use prop types for type checking.
+    *   Use TypeScript types/interfaces for type checking.
     *   Rationale: Functional components are simpler to reason about and test. Separation of concerns improves maintainability.
 *   **State Management**:
     *   Use React Context API for simple, localized state management.
@@ -153,22 +153,137 @@ Key architectural decisions:
 *   **Error Handling**: Return appropriate HTTP status codes for errors.
 *   **Authentication**: Implement authentication and authorization for secure APIs.
 
-## Example Code Snippets
+## 6. Clean Code Principles
+
+### Core Principles
+
+- **DRY** - Eliminate duplication ruthlessly
+- **KISS** - Simplest solution that works
+- **YAGNI** - Build only what's needed now
+- **SOLID** - Apply all five principles consistently
+- **Boy Scout Rule** - Leave code cleaner than found
+
+### Naming Conventions
+
+- Use **intention-revealing** names
+- Avoid abbreviations except well-known ones (e.g., URL, API)
+- Classes: **nouns**, Methods: **verbs**, Booleans: **is/has/can** prefix
+- Constants: UPPER_SNAKE_CASE
+- No magic numbers - use named constants
+
+### Functions & Methods
+
+- **Single Responsibility** - one reason to change
+- Maximum 20 lines (prefer under 10)
+- Maximum 3 parameters (use objects for more)
+- No side effects in pure functions
+- Early returns over nested conditions
+
+### Code Structure
+
+- **Cyclomatic complexity** < 10
+- Maximum nesting depth: 3 levels
+- Organize by feature, not by type
+- Dependencies point inward (Clean Architecture)
+- Interfaces over implementations
+
+### Comments & Documentation
+
+- Code should be self-documenting
+- Comments explain **why**, not what
+- Update comments with code changes
+- Delete commented-out code immediately
+- Document public APIs thoroughly
+
+### Error Handling
+
+- Fail fast with clear messages
+- Use exceptions over error codes
+- Handle errors at appropriate levels
+- Never catch generic exceptions
+- Log errors with context
+
+### Testing
+
+- **TDD** when possible
+- Test behavior, not implementation
+- One assertion per test
+- Descriptive test names: `should_X_when_Y`
+- **AAA pattern**: Arrange, Act, Assert
+- Maintain test coverage > 80%
+
+### Performance & Optimization
+
+- Profile before optimizing
+- Optimize algorithms before micro-optimizations
+- Cache expensive operations
+- Lazy load when appropriate
+- Avoid premature optimization
+
+### Security
+
+- Never trust user input
+- Sanitize all inputs
+- Use parameterized queries
+- Follow **principle of least privilege**
+- Keep dependencies updated
+- No secrets in code
+
+### Version Control
+
+- Atomic commits - one logical change
+- Imperative mood commit messages
+- Reference issue numbers
+- Branch names: `type/description`
+- Rebase feature branches before merging
+
+### Code Reviews
+
+- Review for correctness first
+- Check edge cases
+- Verify naming clarity
+- Ensure consistent style
+- Suggest improvements constructively
+
+### Refactoring Triggers
+
+- Duplicate code (Rule of Three)
+- Long methods/classes
+- Feature envy
+- Data clumps
+- Divergent change
+- Shotgun surgery
+
+### Final Checklist
+
+Before committing, ensure:
+- [ ] All tests pass
+- [ ] No linting errors
+- [ ] No console logs
+- [ ] No commented code
+- [ ] No TODOs without tickets
+- [ ] Performance acceptable
+- [ ] Security considered
+- [ ] Documentation updated
+
+Remember: **Clean code reads like well-written prose**. Optimize for readability and maintainability over cleverness.
+
+## 7. Example Code Snippets
 
 ### React Component
 
-```jsx
+```tsx
 // MUST: Example of a functional React component with props and styling
 // This component displays a button with a label and handles click events.
 import React from 'react';
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
-  background-color: ${props => props.theme.primaryColor};
+  background-color: ${({ theme }) => theme.colors.primary};
   color: white;
-  padding: 10px 20px;
+  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.lg};
   border: none;
-  border-radius: 5px;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   cursor: pointer;
 
   &:hover {
@@ -176,7 +291,12 @@ const StyledButton = styled.button`
   }
 `;
 
-const Button = ({ label, onClick }) => {
+interface ButtonProps {
+  label: string;
+  onClick: () => void;
+}
+
+const Button = ({ label, onClick }: ButtonProps) => {
   return (
     <StyledButton onClick={onClick}>{label}</StyledButton>
   );
@@ -185,15 +305,15 @@ const Button = ({ label, onClick }) => {
 export default Button;
 ```
 
-```jsx
+```tsx
 // MUST NOT: Example of a component with inline styles and direct DOM manipulation
 // Inline styles are difficult to manage and maintain. Direct DOM manipulation bypasses React's rendering process.
 import React from 'react';
 
-const BadButton = ({ label, onClick }) => {
+const BadButton = ({ label, onClick }: { label: string; onClick: () => void }) => {
   return (
     <button style={{ backgroundColor: 'red', color: 'white' }} onClick={() => {
-      document.getElementById('my-element').innerHTML = 'Clicked!';
+      document.getElementById('my-element')!.innerHTML = 'Clicked!';
       onClick();
     }}>
       {label}
@@ -206,23 +326,23 @@ export default BadButton;
 
 ### Styled Components
 
-```javascript
+```tsx
 // MUST: Example of using Styled Components with theme variables
 // Theme variables provide a consistent look and feel across the application.
 import styled from 'styled-components';
 
 export const StyledTitle = styled.h1`
-  font-size: 2em;
-  color: ${props => props.theme.textColor};
+  font-size: ${({ theme }) => theme.typography.fontSize['2xl']};
+  color: ${({ theme }) => theme.colors.text.primary};
 `;
 ```
 
 ### Error Handling
 
-```javascript
+```typescript
 // MUST: Example of using try...catch for error handling in an API call
 // This ensures that errors are caught and handled gracefully.
-async function fetchData() {
+async function fetchData(): Promise<Data | null> {
   try {
     const response = await fetch('/api/data');
     const data = await response.json();
@@ -237,14 +357,19 @@ async function fetchData() {
 
 ### Context API
 
-```jsx
+```tsx
 // MUST: Example of using Context API for state management
 // This allows sharing state between components without prop drilling.
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from 'react';
 
-const ThemeContext = createContext();
+interface ThemeContextType {
+  theme: string;
+  toggleTheme: () => void;
+}
 
-export const ThemeProvider = ({ children }) => {
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState('light');
 
   const toggleTheme = () => {
@@ -258,5 +383,12 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+};
 ```
+

@@ -78,9 +78,7 @@ const TabButton = styled.button<{ $active?: boolean; $disabled?: boolean; $varia
     border-bottom-color: transparent;
   `}
 
-  ${({
-    $variant, theme, $active, $disabled,
-  }) => $variant === 'pills' && !$active && !$disabled && `
+  ${({ $variant, theme, $active, $disabled }) => $variant === 'pills' && !$active && !$disabled && `
     &:hover {
       background-color: ${theme.colors.background.paper};
     }
@@ -152,6 +150,7 @@ export const Tabs = ({
               type="button"
               role="tab"
               aria-selected={isActive}
+              aria-disabled={item.disabled}
               aria-controls={`tabpanel-${item.value}`}
               id={`tab-${item.value}`}
               $active={isActive}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { lightTheme } from '@/styles/theme';
+import lightTheme from '../../styles/theme';
 import { Layout, Header, Footer, Sidebar } from './index';
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -50,24 +50,24 @@ describe('Layout', () => {
     render(
       <TestWrapper>
         <Layout sidebar={<Sidebar>Sidebar Content</Sidebar>} sidebarPosition="left">
-          <div>Content</div>
+          <div>Main Content</div>
         </Layout>
       </TestWrapper>,
     );
     expect(screen.getByText(/sidebar content/i)).toBeInTheDocument();
-    expect(screen.getByText(/content/i)).toBeInTheDocument();
+    expect(screen.getByText(/main content/i)).toBeInTheDocument();
   });
 
   it('renders layout with sidebar on right', () => {
     render(
       <TestWrapper>
         <Layout sidebar={<Sidebar>Sidebar Content</Sidebar>} sidebarPosition="right">
-          <div>Content</div>
+          <div>Main Content</div>
         </Layout>
       </TestWrapper>,
     );
     expect(screen.getByText(/sidebar content/i)).toBeInTheDocument();
-    expect(screen.getByText(/content/i)).toBeInTheDocument();
+    expect(screen.getByText(/main content/i)).toBeInTheDocument();
   });
 
   it('applies maxWidth prop', () => {
@@ -115,7 +115,7 @@ describe('Header', () => {
   it('renders header with actions', () => {
     render(
       <TestWrapper>
-        <Header actions={<button>Action</button>} />
+        <Header actions={<button type="button">Action</button>} />
       </TestWrapper>,
     );
     expect(screen.getByText(/action/i)).toBeInTheDocument();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { lightTheme } from '@/styles/theme';
+import lightTheme from '../../styles/theme';
 import { Checkbox } from './Checkbox';
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -26,7 +26,7 @@ describe('Checkbox', () => {
         <Checkbox label="Checked" checked />
       </TestWrapper>,
     );
-    const checkbox = screen.getByRole('checkbox');
+    const checkbox = screen.getByLabelText(/checked/i);
     expect(checkbox).toBeChecked();
   });
 
@@ -37,7 +37,7 @@ describe('Checkbox', () => {
         <Checkbox label="Test" onChange={handleChange} />
       </TestWrapper>,
     );
-    const checkbox = screen.getByRole('checkbox');
+    const checkbox = screen.getByLabelText(/test/i);
     fireEvent.click(checkbox);
     expect(handleChange).toHaveBeenCalled();
   });
@@ -67,7 +67,7 @@ describe('Checkbox', () => {
         <Checkbox label="Disabled" disabled />
       </TestWrapper>,
     );
-    const checkbox = screen.getByRole('checkbox');
+    const checkbox = screen.getByLabelText(/disabled/i);
     expect(checkbox).toBeDisabled();
   });
 
@@ -78,7 +78,7 @@ describe('Checkbox', () => {
         <Checkbox label="Test" onChange={handleChange} />
       </TestWrapper>,
     );
-    const checkbox = screen.getByRole('checkbox');
+    const checkbox = screen.getByLabelText(/test/i);
     checkbox.focus();
     fireEvent.keyDown(checkbox, { key: 'Enter' });
     expect(handleChange).toHaveBeenCalled();
@@ -91,7 +91,7 @@ describe('Checkbox', () => {
         <Checkbox label="Test" onChange={handleChange} />
       </TestWrapper>,
     );
-    const checkbox = screen.getByRole('checkbox');
+    const checkbox = screen.getByLabelText(/test/i);
     checkbox.focus();
     fireEvent.keyDown(checkbox, { key: ' ' });
     expect(handleChange).toHaveBeenCalled();
@@ -104,7 +104,7 @@ describe('Checkbox', () => {
         <Checkbox label="Disabled" disabled onChange={handleChange} />
       </TestWrapper>,
     );
-    const checkbox = screen.getByRole('checkbox');
+    const checkbox = screen.getByLabelText(/disabled/i);
     fireEvent.click(checkbox);
     expect(handleChange).not.toHaveBeenCalled();
   });

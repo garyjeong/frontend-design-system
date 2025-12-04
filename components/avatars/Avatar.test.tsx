@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { lightTheme } from '@/styles/theme';
+import lightTheme from '../../styles/theme';
 import { Avatar } from './Avatar';
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -49,26 +49,34 @@ describe('Avatar', () => {
     expect(screen.getByText(/j/i)).toBeInTheDocument();
   });
 
-  it('shows fallback when image fails to load', () => {
+  it('shows fallback when image fails to load', async () => {
     render(
       <TestWrapper>
         <Avatar src="/invalid.jpg" alt="Test" fallback={<span>Fallback</span>} />
       </TestWrapper>,
     );
-    const image = screen.getByAltText(/test/i);
-    image.dispatchEvent(new Event('error', { bubbles: true }));
-    expect(screen.getByText(/fallback/i)).toBeInTheDocument();
+    const image = screen.getByAltText(/test/i) as HTMLImageElement;
+    await act(async () => {
+      fireEvent.error(image);
+    });
+    await waitFor(() => {
+      expect(screen.getByText(/fallback/i)).toBeInTheDocument();
+    });
   });
 
-  it('shows initials when image fails to load and no fallback', () => {
+  it('shows initials when image fails to load and no fallback', async () => {
     render(
       <TestWrapper>
         <Avatar src="/invalid.jpg" alt="John Doe" />
       </TestWrapper>,
     );
-    const image = screen.getByAltText(/john doe/i);
-    image.dispatchEvent(new Event('error', { bubbles: true }));
-    expect(screen.getByText(/jd/i)).toBeInTheDocument();
+    const image = screen.getByAltText(/john doe/i) as HTMLImageElement;
+    await act(async () => {
+      fireEvent.error(image);
+    });
+    await waitFor(() => {
+      expect(screen.getByText(/jd/i)).toBeInTheDocument();
+    });
   });
 
   it('applies small size', () => {

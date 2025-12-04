@@ -207,30 +207,27 @@ export const Pagination = ({
 
   return (
     <PaginationContainer aria-label="Pagination">
-      {showFirstLast && (
-        <>
-          {hrefBuilder ? (
-            <PaginationLink
-              href={hrefBuilder(1)}
-              $disabled={currentPage === 1}
-              aria-label="First page"
-            >
-              <FaChevronLeft />
-              <FaChevronLeft style={{ marginLeft: '-4px' }} />
-            </PaginationLink>
-          ) : (
-            <PaginationButton
-              type="button"
-              $disabled={currentPage === 1}
-              onClick={() => handlePageChange(1)}
-              aria-label="First page"
-            >
-              <FaChevronLeft />
-              <FaChevronLeft style={{ marginLeft: '-4px' }} />
-            </PaginationButton>
-          )}
-        </>
-      )}
+      {showFirstLast && (hrefBuilder ? (
+        <PaginationLink
+          href={hrefBuilder(1)}
+          $disabled={currentPage === 1}
+          aria-label="First page"
+        >
+          <FaChevronLeft />
+          <FaChevronLeft style={{ marginLeft: '-4px' }} />
+        </PaginationLink>
+      ) : (
+        <PaginationButton
+          type="button"
+          disabled={currentPage === 1}
+          $disabled={currentPage === 1}
+          onClick={() => handlePageChange(1)}
+          aria-label="First page"
+        >
+          <FaChevronLeft />
+          <FaChevronLeft style={{ marginLeft: '-4px' }} />
+        </PaginationButton>
+      ))}
 
       {hrefBuilder ? (
         <PaginationLink
@@ -243,6 +240,7 @@ export const Pagination = ({
       ) : (
         <PaginationButton
           type="button"
+          disabled={currentPage === 1}
           $disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
           aria-label="Previous page"
@@ -253,7 +251,10 @@ export const Pagination = ({
 
       {pageNumbers.map((page, index) => {
         if (page === 'ellipsis') {
-          return <Ellipsis key={`ellipsis-${index}`}>...</Ellipsis>;
+          // Create unique key based on position and surrounding pages
+          const prevPage = index > 0 ? pageNumbers[index - 1] : 'start';
+          const nextPage = index < pageNumbers.length - 1 ? pageNumbers[index + 1] : 'end';
+          return <Ellipsis key={`ellipsis-${prevPage}-${nextPage}-${currentPage}`}>...</Ellipsis>;
         }
 
         const isActive = page === currentPage;
@@ -297,6 +298,7 @@ export const Pagination = ({
       ) : (
         <PaginationButton
           type="button"
+          disabled={currentPage === totalPages}
           $disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
           aria-label="Next page"
@@ -305,30 +307,27 @@ export const Pagination = ({
         </PaginationButton>
       )}
 
-      {showFirstLast && (
-        <>
-          {hrefBuilder ? (
-            <PaginationLink
-              href={hrefBuilder(totalPages)}
-              $disabled={currentPage === totalPages}
-              aria-label="Last page"
-            >
-              <FaChevronRight />
-              <FaChevronRight style={{ marginLeft: '-4px' }} />
-            </PaginationLink>
-          ) : (
-            <PaginationButton
-              type="button"
-              $disabled={currentPage === totalPages}
-              onClick={() => handlePageChange(totalPages)}
-              aria-label="Last page"
-            >
-              <FaChevronRight />
-              <FaChevronRight style={{ marginLeft: '-4px' }} />
-            </PaginationButton>
-          )}
-        </>
-      )}
+      {showFirstLast && (hrefBuilder ? (
+        <PaginationLink
+          href={hrefBuilder(totalPages)}
+          $disabled={currentPage === totalPages}
+          aria-label="Last page"
+        >
+          <FaChevronRight />
+          <FaChevronRight style={{ marginLeft: '-4px' }} />
+        </PaginationLink>
+      ) : (
+        <PaginationButton
+          type="button"
+          disabled={currentPage === totalPages}
+          $disabled={currentPage === totalPages}
+          onClick={() => handlePageChange(totalPages)}
+          aria-label="Last page"
+        >
+          <FaChevronRight />
+          <FaChevronRight style={{ marginLeft: '-4px' }} />
+        </PaginationButton>
+      ))}
     </PaginationContainer>
   );
 };

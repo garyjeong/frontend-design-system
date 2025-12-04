@@ -64,37 +64,36 @@ graph LR
 /
 ├── components/              # 재사용 가능한 React 컴포넌트
 │   ├── buttons/           # 버튼 컴포넌트
-│   │   ├── Button.jsx
-│   │   ├── Button.module.css
-│   │   └── ...
+│   │   ├── Button.tsx
+│   │   ├── Button.test.tsx
+│   │   └── index.ts
 │   ├── forms/             # 폼 요소 컴포넌트
-│   │   ├── TextField.jsx
-│   │   ├── Dropdown.jsx
+│   │   ├── TextField.tsx
+│   │   ├── Dropdown.tsx
 │   │   └── ...
 │   ├── navigation/        # 네비게이션 컴포넌트
-│   │   ├── Menu.jsx
-│   │   ├── Tabs.jsx
+│   │   ├── Menu.tsx
+│   │   ├── Tabs.tsx
 │   │   └── ...
 │   └── ...
-├── pages/                 # NextJS 페이지
-│   ├── index.jsx          # 메인 페이지
-│   ├── portfolio.jsx      # 포트폴리오 페이지
+├── app/                    # NextJS App Router pages
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Home page
 │   └── ...
-├── styles/                # 전역 스타일 및 테마
+├── styles/                 # 전역 스타일 및 테마
 │   ├── globals.css        # 전역 CSS 스타일
-│   ├── theme.js           # 테마 정의
-│   └── ...
-├── public/                # 정적 파일 (이미지, 폰트 등)
+│   ├── theme.ts           # 테마 정의
+│   └── GlobalStyles.ts    # Styled Components global styles
+├── public/                 # 정적 파일 (이미지, 폰트 등)
 │   ├── images/
 │   ├── fonts/
 │   └── ...
-├── utils/                 # 유틸리티 함수
-│   ├── api.js           # API 호출 함수
-│   ├── helpers.js       # 헬퍼 함수
+├── shared/                 # 공유 유틸리티 및 컨텍스트
+│   ├── contexts/         # React Context providers
 │   └── ...
-├── .eslintrc.js           # ESLint 설정
-├── next.config.js         # NextJS 설정
-└── package.json           # 프로젝트 의존성 및 스크립트
+├── .eslintrc.js            # ESLint 설정
+├── next.config.js          # NextJS 설정
+└── package.json            # 프로젝트 의존성 및 스크립트
 ```
 
 ### Data Flow & Communication Patterns
@@ -147,3 +146,4 @@ graph LR
     - 개발 인력 부족 시 추가 인력 확보 또는 외부 전문가 활용
     - 코드 품질 확보를 위한 코드 리뷰 및 테스트 강화
     - 배포 환경 문제 발생 시 롤백 전략 마련
+

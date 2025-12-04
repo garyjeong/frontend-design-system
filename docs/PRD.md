@@ -65,3 +65,4 @@ This document outlines the requirements for a design system intended for individ
 *   **Phase 1:** Develop core UI components and style guide.
 *   **Phase 2:** Create design templates for common use cases.
 *   **Phase 3:** Add advanced components and theme system.
+

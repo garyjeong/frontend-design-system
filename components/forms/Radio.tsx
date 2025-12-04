@@ -178,9 +178,14 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
               checked={checked}
               disabled={disabled}
               aria-label={ariaLabel || label}
+              aria-checked={checked}
               aria-invalid={error ? 'true' : undefined}
               aria-describedby={describedBy}
-              onChange={onChange}
+              onChange={(e) => {
+                if (!disabled && onChange) {
+                  onChange(e);
+                }
+              }}
               // eslint-disable-next-line react/jsx-props-no-spreading
               {...props}
             />

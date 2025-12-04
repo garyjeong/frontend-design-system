@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
 
@@ -175,10 +175,20 @@ export const Modal = ({
 }: ModalProps) => {
   const [isClosing, setIsClosing] = React.useState(false);
 
+  const handleClose = useCallback(() => {
+    setIsClosing(true);
+    setTimeout(() => {
+      onClose();
+      setIsClosing(false);
+    }, 300);
+  }, [onClose]);
+
   useEffect(() => {
     if (!isOpen) {
       setIsClosing(false);
-      return;
+      return () => {
+        // Cleanup when modal is closed
+      };
     }
 
     const handleEscape = (e: KeyboardEvent) => {
@@ -194,15 +204,7 @@ export const Modal = ({
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = '';
     };
-  }, [isOpen, closeOnEscape]);
-
-  const handleClose = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      onClose();
-      setIsClosing(false);
-    }, 300);
-  };
+  }, [isOpen, closeOnEscape, handleClose]);
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (closeOnOverlayClick && e.target === e.currentTarget) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { lightTheme } from '@/styles/theme';
+import lightTheme from '../../styles/theme';
 import { Radio } from './Radio';
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -26,7 +26,7 @@ describe('Radio', () => {
         <Radio label="Checked" checked />
       </TestWrapper>,
     );
-    const radio = screen.getByRole('radio');
+    const radio = screen.getByLabelText(/checked/i);
     expect(radio).toBeChecked();
   });
 
@@ -37,7 +37,7 @@ describe('Radio', () => {
         <Radio label="Test" onChange={handleChange} />
       </TestWrapper>,
     );
-    const radio = screen.getByRole('radio');
+    const radio = screen.getByLabelText(/test/i);
     fireEvent.click(radio);
     expect(handleChange).toHaveBeenCalled();
   });
@@ -49,7 +49,7 @@ describe('Radio', () => {
         <Radio label="Test" checked onChange={handleChange} />
       </TestWrapper>,
     );
-    const radio = screen.getByRole('radio');
+    const radio = screen.getByLabelText(/test/i);
     fireEvent.click(radio);
     expect(handleChange).not.toHaveBeenCalled();
   });
@@ -79,7 +79,7 @@ describe('Radio', () => {
         <Radio label="Disabled" disabled />
       </TestWrapper>,
     );
-    const radio = screen.getByRole('radio');
+    const radio = screen.getByLabelText(/disabled/i);
     expect(radio).toBeDisabled();
   });
 
@@ -90,7 +90,7 @@ describe('Radio', () => {
         <Radio label="Test" onChange={handleChange} />
       </TestWrapper>,
     );
-    const radio = screen.getByRole('radio');
+    const radio = screen.getByLabelText(/test/i);
     radio.focus();
     fireEvent.keyDown(radio, { key: 'Enter' });
     expect(handleChange).toHaveBeenCalled();
@@ -103,7 +103,7 @@ describe('Radio', () => {
         <Radio label="Test" onChange={handleChange} />
       </TestWrapper>,
     );
-    const radio = screen.getByRole('radio');
+    const radio = screen.getByLabelText(/test/i);
     radio.focus();
     fireEvent.keyDown(radio, { key: ' ' });
     expect(handleChange).toHaveBeenCalled();
@@ -116,7 +116,7 @@ describe('Radio', () => {
         <Radio label="Disabled" disabled onChange={handleChange} />
       </TestWrapper>,
     );
-    const radio = screen.getByRole('radio');
+    const radio = screen.getByLabelText(/disabled/i);
     fireEvent.click(radio);
     expect(handleChange).not.toHaveBeenCalled();
   });

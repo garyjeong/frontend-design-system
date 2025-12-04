@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { FaUser } from 'react-icons/fa';
-import { lightTheme } from '@/styles/theme';
+import lightTheme from '../../styles/theme';
 import { Button } from './Button';
 
 // Test wrapper with ThemeProvider

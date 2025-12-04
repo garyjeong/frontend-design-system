@@ -1,7 +1,15 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Theme, ThemeMode, lightTheme, darkTheme } from '@/styles/theme';
+import React, { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import type { Theme, ThemeMode } from '../../styles/theme';
+import { GlobalStyles } from '../../styles/GlobalStyles';
+
+// Import themes - use require to avoid Next.js module resolution issues
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const themeModule = require('../../styles/theme');
+const lightTheme = themeModule.lightTheme || themeModule.default;
+const darkTheme = themeModule.darkTheme || (themeModule.themes && themeModule.themes.dark);
 
 interface ThemeContextType {
   theme: Theme;
@@ -46,11 +54,18 @@ export const ThemeProvider = ({ children, defaultMode = 'light' }: ThemeProvider
     }
   };
 
-  const theme = mode === 'light' ? lightTheme : darkTheme;
+  // Always provide a theme, even during SSR
+  // This ensures styled-components ThemeProvider always has a theme prop
+  const currentTheme = useMemo(() => {
+    return mode === 'light' ? lightTheme : darkTheme;
+  }, [mode]);
 
   return (
-    <ThemeContext.Provider value={{ theme, mode, toggleTheme, setTheme }}>
-      {children}
+    <ThemeContext.Provider value={{ theme: currentTheme, mode, toggleTheme, setTheme }}>
+      <StyledThemeProvider theme={currentTheme}>
+        <GlobalStyles />
+        {children}
+      </StyledThemeProvider>
     </ThemeContext.Provider>
   );
 };

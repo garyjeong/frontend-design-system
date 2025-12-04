@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { lightTheme } from '@/styles/theme';
+import lightTheme from '../../styles/theme';
 import { Card } from './Card';
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -52,7 +52,7 @@ describe('Card', () => {
   it('renders card with actions', () => {
     render(
       <TestWrapper>
-        <Card actions={<button>Action</button>} />
+        <Card actions={<button type="button">Action</button>} />
       </TestWrapper>,
     );
     expect(screen.getByText(/action/i)).toBeInTheDocument();

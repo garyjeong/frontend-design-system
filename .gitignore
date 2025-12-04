@@ -34,3 +34,18 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# swc
+.swc/
+
+# pnpm
+pnpm-lock.yaml
+
+# vooster
+.vooster/
+
+# playwright-mcp
+.playwright-mcp/
+
+# stitch (design system examples with potential secrets)
+stitch/
+
