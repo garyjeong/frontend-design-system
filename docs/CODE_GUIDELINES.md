@@ -2,14 +2,14 @@
 
 ## 1. Project Overview
 
-This project involves building a design system for individual front-end developers using ReactJS and NextJS. The system provides reusable UI components and design templates to enhance development productivity and ease customization.
+React 19 + Vite + Tailwind CSS(+CVA) 기반 개인용 디자인 시스템입니다. 재사용 가능한 UI 컴포넌트와 템플릿을 제공하여 생산성과 커스터마이징 용이성을 높입니다.
 
 Key architectural decisions:
 
-*   **Framework**: NextJS for server-side rendering (SSR) and static site generation (SSG).
-*   **UI Library**: ReactJS for component-based architecture.
-*   **Styling**: Styled Components for CSS-in-JS.
-*   **State Management**: React Context API for simple state management.
+*   **Framework/Build**: Vite 5 (React 19, TS 5) — 빠른 HMR, 라이브러리 모드+dts
+*   **Styling**: Tailwind CSS 3.4 + Class Variance Authority(CVA)로 변이 관리
+*   **State Management**: React Context API 최소 사용 (테마 등 경량 글로벌 상태)
+*   **Docs/Playground**: Storybook 8, Vite dev (src/dev/App.tsx)
 
 ## 2. Core Principles
 
@@ -21,15 +21,14 @@ Key architectural decisions:
 
 ## 3. Language-Specific Guidelines
 
-### 3.1. JavaScript (React/NextJS)
+### 3.1. JavaScript (React/Vite)
 
 #### File Organization and Directory Structure
 
-*   Follow the domain-driven organization strategy as outlined in the TRD.
-*   Component files should be placed in relevant directories within the `components` folder.
-*   Page files should reside in the `app` directory (Next.js App Router).
-*   Utility functions and helper files should be in the `utils` directory.
-*   Styles (global and component-specific) should be in the `styles` directory.
+*   Atomic Design + 도메인 분리(`components/buttons`, `components/forms`, ...).
+*   Dev/Playground는 `src/dev`에 배치, 라이브러리 엔트리는 `src/index.ts`.
+*   공통 유틸은 `src/utils`, 컨텍스트는 `src/shared/contexts`.
+*   전역 스타일은 `src/index.css` 및 `styles/globals.css`에 Tailwind `@layer base`로 관리.
 
 #### Import/Dependency Management
 
@@ -46,25 +45,26 @@ Key architectural decisions:
 *   Log errors to the console or a dedicated logging service for debugging.
 *   Display user-friendly error messages to the user.
 
-### 3.2. CSS (Styled Components)
+### 3.2. Styling (Tailwind CSS + CVA)
 
 #### File Organization
 
-*   Component-specific styles should be defined within the component file using Styled Components.
-*   Global styles should be defined in `styles/globals.css` or using Styled Components' `createGlobalStyle`.
-*   Theme variables should be defined in `styles/theme.ts`.
+*   컴포넌트 단위 스타일은 Tailwind 유틸리티 클래스로 구성.
+*   변이(variant)는 `cva`로 정의하고, 헬퍼 `cn`/`tailwind-merge`로 클래스 병합.
+*   전역 스타일/리셋은 `src/index.css`, `styles/globals.css`의 `@layer base`에서 관리.
 
-#### Naming Conventions
+#### Naming & Conventions
 
-*   Use camelCase for Styled Components variable names (e.g., `StyledButton`).
-*   Use semantic class names in global styles (e.g., `.button--primary`).
+*   CVA key는 명확한 의미로 정의 (`variant`, `size`, `rounded`, `state` 등).
+*   다크 모드는 Tailwind `dark` 클래스 전략을 사용 (`dark:bg-*`, `dark:text-*`).
+*   클래스 순서는 Tailwind 플러그인/포매터(Prettier Tailwind)가 정렬하도록 유지.
 
 #### Best Practices
 
-*   Use theme variables for consistent styling across the application.
-*   Avoid using inline styles directly in components.
-*   Use media queries for responsive design.
-*   Use `attrs` to pass props to styled components.
+*   인라인 스타일 대신 유틸리티 클래스 사용.
+*   공통 패턴은 `cva` + `cn` 헬퍼로 중복 제거.
+*   접근성: 포커스 링(`focus-visible`)과 aria-속성(aria-*), 역할(role) 명시.
+*   반응형/상태 클래스는 명시적으로 (`sm:`, `md:`, `hover:`, `disabled:` 등) 표현.
 
 ## 4. Code Style Rules
 
@@ -82,14 +82,14 @@ Key architectural decisions:
     *   Use TypeScript types/interfaces for type checking.
     *   Rationale: Functional components are simpler to reason about and test. Separation of concerns improves maintainability.
 *   **State Management**:
-    *   Use React Context API for simple, localized state management.
-    *   Consider Redux or Zustand for more complex global state management scenarios (if needed, but avoid over-engineering).
-    *   Rationale: Context API is sufficient for this project's scope.
+    *   React Context API는 경량 글로벌 상태(예: 테마)에서만 사용.
+    *   복잡한 전역 상태는 지양하고 props 상향식 데이터 흐름을 우선.
+    *   Rationale: 단순한 상태 공유로 복잡도 최소화.
 *   **Styling**:
-    *   Use Styled Components for component-level styling.
-    *   Use theme variables for consistent styling.
-    *   Avoid inline styles.
-    *   Rationale: Styled Components encapsulate styles and make them easier to manage.
+    *   Tailwind 유틸리티 + CVA 변이 사용.
+    *   클래스 병합 시 `tailwind-merge`/`clsx` 기반 `cn` 헬퍼 사용.
+    *   다크 모드는 `dark` 클래스 토글 전략.
+    *   Rationale: 유틸리티+변이 패턴으로 일관성과 확장성을 확보.
 *   **Error Handling**:
     *   Use `try...catch` blocks for error handling in asynchronous operations.
     *   Implement error boundaries for React components.
@@ -324,17 +324,53 @@ const BadButton = ({ label, onClick }: { label: string; onClick: () => void }) =
 export default BadButton;
 ```
 
-### Styled Components
+### Tailwind + CVA Button 예시
 
 ```tsx
-// MUST: Example of using Styled Components with theme variables
-// Theme variables provide a consistent look and feel across the application.
-import styled from 'styled-components';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/utils/cn';
 
-export const StyledTitle = styled.h1`
-  font-size: ${({ theme }) => theme.typography.fontSize['2xl']};
-  color: ${({ theme }) => theme.colors.text.primary};
-`;
+const buttonVariants = cva(
+  'inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
+  {
+    variants: {
+      variant: {
+        primary: 'bg-primary-500 text-white hover:bg-primary-600 dark:bg-primary-500 dark:hover:bg-primary-400',
+        secondary: 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700',
+        ghost: 'bg-transparent text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800',
+      },
+      size: {
+        sm: 'h-8 px-3 text-xs rounded-md',
+        md: 'h-10 px-4 text-sm rounded-lg',
+        lg: 'h-12 px-6 text-base rounded-xl',
+      },
+      fullWidth: {
+        true: 'w-full',
+        false: 'w-auto',
+      },
+    },
+    defaultVariants: {
+      variant: 'primary',
+      size: 'md',
+      fullWidth: false,
+    },
+  }
+);
+
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonVariants> & {
+    isLoading?: boolean;
+  };
+
+export const Button = ({ className, variant, size, fullWidth, isLoading, children, ...props }: ButtonProps) => (
+  <button
+    className={cn(buttonVariants({ variant, size, fullWidth }), className)}
+    disabled={isLoading || props.disabled}
+    {...props}
+  >
+    {isLoading ? 'Loading...' : children}
+  </button>
+);
 ```
 
 ### Error Handling

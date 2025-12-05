@@ -1,0 +1,55 @@
+# Project Rules
+
+## 0. Core Principles
+- **Minimal Change Principle (MCP)**: Preserve existing logic where possible; minimize scope of changes.
+- **Documentation First**: Always refer to Project Rules and local docs before coding.
+- **User Approval Required**: Do not run servers/builds/commits without explicit user approval (unless readonly).
+
+## 1. Project Overview
+- **Goal**: Personal Design System & Component Library for individual developers.
+- **Tech Stack**: React 19, Vite, TypeScript, Tailwind CSS, Storybook.
+- **State Management**: React Context API (minimal usage), Props.
+
+## 2. Architecture
+- **Pattern**: Atomic Design (Atoms, Molecules, Organisms, Templates, Pages).
+- **Structure**:
+  - `src/components/atoms` (Buttons, Inputs, Icons)
+  - `src/components/molecules` (Form fields, Search bars)
+  - `src/components/organisms` (Cards, Tables, Modals)
+  - `src/components/templates` (Layouts, Dashboards)
+  - `src/hooks`, `src/utils`, `src/styles`
+- **Styling**: Tailwind CSS Utility Classes + Class Variance Authority (CVA) for variants.
+
+## 3. Code Style
+- **Language**: TypeScript (Strict Mode).
+- **Formatting**: Prettier (default settings).
+- **Linting**: ESLint with React/Hooks/A11y plugins.
+- **CSS**: 
+  - Use Tailwind utility classes primarily.
+  - Use `cva` for component variants.
+  - Sort Tailwind classes (via Prettier plugin if available).
+  - Avoid inline styles.
+- **Naming**:
+  - Components: PascalCase (`Button.tsx`)
+  - Functions/Vars: camelCase (`handleClick`)
+  - Constants: UPPER_SNAKE_CASE
+  - Files: PascalCase for components, camelCase for utils/hooks.
+
+## 4. Testing
+- **Strategy**: Component Unit Testing.
+- **Tools**: Vitest + React Testing Library.
+- **Coverage**: Focus on interactions, accessibility, and variant rendering.
+
+## 5. Deployment
+- **Strategy**: Manual deployment (managed by user later).
+- **Build Output**: `dist/` (Library mode).
+
+## 6. Special Rules
+- **React 19**: Ensure compatibility with React 19 features and peer dependencies.
+- **Stitch Integration**: Use tokens and HTML/CSS patterns from `stitch/` directory as the source of truth for design.
+- **Dark Mode**: All components must support `dark` class strategy (Tailwind `darkMode: 'class'`).
+
+## 7. References
+- `stitch/**`: Design source (HTML/Tailwind).
+- `docs/`: Project documentation.
+

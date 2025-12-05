@@ -5,10 +5,11 @@ import { ReactNode } from 'react';
 
 interface ProvidersProps {
   children: ReactNode;
+  defaultTheme?: 'light' | 'dark';
 }
 
-export const Providers = ({ children }: ProvidersProps) => (
-  <CustomThemeProvider>
+export const Providers = ({ children, defaultTheme }: ProvidersProps) => (
+  <CustomThemeProvider defaultMode={defaultTheme}>
     {children}
   </CustomThemeProvider>
 );
