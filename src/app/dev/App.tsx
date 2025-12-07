@@ -13,6 +13,7 @@ import { Badge } from '@/shared/ui/atoms/badge';
 import { Avatar } from '@/shared/ui/atoms/avatar';
 import { ToastProvider, useToast } from '@/shared/ui/organisms/toast';
 import { Sidebar, type SidebarNavItem } from '@/shared/ui/templates/sidebar';
+import { ThemeProvider, useTheme } from '@/shared/contexts/ThemeContext';
 import {
   FaUser,
   FaEnvelope,
@@ -40,6 +41,8 @@ import {
   FaWindowMaximize,
   FaSquare,
   FaAlignLeft,
+  FaSun,
+  FaMoon,
 } from 'react-icons/fa';
 
 const useIsDesktop = () => {
@@ -1038,6 +1041,255 @@ const UnifiedPageView = () => {
         </div>
       </div>
 
+      {/* Data Display - Card Section */}
+      <div id="data-card" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
+          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
+            Card
+          </Typography>
+        </div>
+        <div className="p-4">
+          <Card variant="default" padding="md">
+            <Typography variant="h6">카드 제목</Typography>
+            <Typography variant="p" className="mt-2">카드 내용입니다.</Typography>
+          </Card>
+        </div>
+      </div>
+
+      {/* Data Display - Badge Section */}
+      <div id="data-badge" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
+          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
+            Badge
+          </Typography>
+        </div>
+        <div className="p-4 space-x-2">
+          <Badge variant="default">기본</Badge>
+          <Badge variant="secondary">보조</Badge>
+          <Badge variant="destructive">위험</Badge>
+          <Badge variant="outline">윤곽선</Badge>
+          <Badge variant="success">성공</Badge>
+          <Badge variant="warning">경고</Badge>
+        </div>
+      </div>
+
+      {/* Data Display - Avatar Section */}
+      <div id="data-avatar" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
+          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
+            Avatar
+          </Typography>
+        </div>
+        <div className="p-4 space-x-2 flex items-center">
+          <Avatar size="xs" fallback="A" />
+          <Avatar size="sm" fallback="B" />
+          <Avatar size="md" fallback="C" />
+          <Avatar size="lg" fallback="D" />
+          <Avatar size="xl" fallback="E" />
+        </div>
+      </div>
+
+      {/* Data Display - Table Section */}
+      <div id="data-table" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
+          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
+            Table
+          </Typography>
+        </div>
+        <div className="p-4">
+          <Table
+            columns={[
+              { key: 'name', label: '이름' },
+              { key: 'age', label: '나이' },
+              { key: 'city', label: '도시' },
+            ]}
+            data={[
+              { name: '홍길동', age: 30, city: '서울' },
+              { name: '김철수', age: 25, city: '부산' },
+              { name: '이영희', age: 28, city: '대구' },
+            ]}
+          />
+        </div>
+      </div>
+
+      {/* Data Display - List Section */}
+      <div id="data-list" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
+          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
+            List
+          </Typography>
+        </div>
+        <div className="p-4">
+          <List
+            items={[
+              { 
+                id: '1', 
+                content: (
+                  <div>
+                    <Typography variant="p" className="font-medium">리스트 항목 1</Typography>
+                    <Typography variant="small" className="text-neutral-500">설명 1</Typography>
+                  </div>
+                )
+              },
+              { 
+                id: '2', 
+                content: (
+                  <div>
+                    <Typography variant="p" className="font-medium">리스트 항목 2</Typography>
+                    <Typography variant="small" className="text-neutral-500">설명 2</Typography>
+                  </div>
+                )
+              },
+              { 
+                id: '3', 
+                content: (
+                  <div>
+                    <Typography variant="p" className="font-medium">리스트 항목 3</Typography>
+                    <Typography variant="small" className="text-neutral-500">설명 3</Typography>
+                  </div>
+                )
+              },
+            ]}
+          />
+        </div>
+      </div>
+
+      {/* Navigation - Breadcrumb Section */}
+      <div id="navigation-breadcrumb" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
+          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
+                  Breadcrumb
+                </Typography>
+              </div>
+        <div className="p-4">
+                <Breadcrumb
+                  items={[
+                    { label: '홈', href: '#', onClick: () => showToast({ message: '홈으로 이동', type: 'info' }) },
+                    { label: '컴포넌트', href: '#', onClick: () => showToast({ message: '컴포넌트로 이동', type: 'info' }) },
+                    { label: '탐색' },
+                  ]}
+                />
+              </div>
+            </div>
+            
+      {/* Navigation - Stepper Section */}
+      <div id="navigation-stepper" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
+          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
+                  Stepper
+                </Typography>
+              </div>
+        <div className="p-4">
+                <Stepper steps={[
+                  { label: '1단계', description: '세부 정보' },
+                  { label: '2단계', description: '설정' },
+                  { label: '3단계', description: '검토' },
+                ]} currentStep={1} />
+              </div>
+            </div>
+            
+      {/* Navigation - Pagination Section */}
+      <div id="navigation-pagination" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
+          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
+            Pagination
+          </Typography>
+        </div>
+        <div className="p-4">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={10}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      </div>
+
+      {/* Navigation - Tabs Section */}
+      <div id="navigation-tabs" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
+          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
+            Tabs
+          </Typography>
+        </div>
+        <div className="p-4">
+          <Tabs
+            items={[
+              { label: '탭 1', value: 'tab1', content: <Typography variant="p">탭 1 내용</Typography> },
+              { label: '탭 2', value: 'tab2', content: <Typography variant="p">탭 2 내용</Typography> },
+              { label: '탭 3', value: 'tab3', content: <Typography variant="p">탭 3 내용</Typography> },
+            ]}
+            value={activeTab}
+            onValueChange={setActiveTab}
+          />
+        </div>
+      </div>
+
+      {/* Navigation - Menu Section */}
+      <div id="navigation-menu" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
+          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
+            Menu
+          </Typography>
+        </div>
+        <div className="p-4">
+          <Menu
+            items={[
+              { id: '1', label: '메뉴 항목 1', icon: FaHome },
+              { id: '2', label: '메뉴 항목 2', icon: FaUser },
+              { id: '3', label: '메뉴 항목 3', icon: FaCog },
+            ]}
+            activeItem={activeMenuItem}
+            onItemClick={(item) => setActiveMenuItem(item.id)}
+          />
+        </div>
+      </div>
+
+      {/* Navigation - Accordion Section */}
+      <div id="navigation-accordion" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
+          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
+                  Accordion
+                </Typography>
+              </div>
+        <div className="p-4">
+                <Accordion
+                  items={[
+                    {
+                      title: '첫 번째 항목',
+                      content: (
+                        <div className="space-y-3">
+                          <Typography variant="p" className="text-sm text-neutral-600 dark:text-neutral-400">
+                            이것은 첫 번째 아코디언 항목의 내용입니다. 여러 줄의 텍스트와 버튼을 포함할 수 있습니다.
+                          </Typography>
+                          <Button size="small" variant="outline" onClick={() => showToast({ message: '첫 번째 항목의 액션', type: 'info' })}>
+                            액션 버튼
+                          </Button>
+                        </div>
+                      ),
+                    },
+                    {
+                      title: '두 번째 항목',
+                      content: (
+                        <Typography variant="p" className="text-sm text-neutral-600 dark:text-neutral-400">
+                          이것은 두 번째 아코디언 항목의 내용입니다. 간단한 텍스트만 포함되어 있습니다.
+                        </Typography>
+                      ),
+                    },
+                    {
+                      title: '세 번째 항목 (비활성화)',
+                      content: (
+                        <Typography variant="p" className="text-sm text-neutral-500 dark:text-neutral-500">
+                          이 항목은 비활성화되어 있습니다.
+                        </Typography>
+                      ),
+                      disabled: true,
+                    },
+                  ]}
+                  allowMultiple={false}
+                />
+              </div>
+            </div>
+
       {/* Feedback - Alert Section */}
       <div id="feedback-alert" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
         <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
@@ -1093,8 +1345,8 @@ const UnifiedPageView = () => {
             </div>
           <Skeleton variant="rectangle" width="full" height="md" />
           <Skeleton variant="text" width="3/4" />
-                  </div>
-                </div>
+        </div>
+      </div>
 
       {/* Feedback - Toast Section */}
       <div id="feedback-toast" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
@@ -1210,255 +1462,6 @@ const UnifiedPageView = () => {
           </Drawer>
         </div>
       </div>
-      
-      {/* Navigation - Breadcrumb Section */}
-      <div id="navigation-breadcrumb" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
-          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
-                  Breadcrumb
-                </Typography>
-              </div>
-        <div className="p-4">
-                <Breadcrumb
-                  items={[
-                    { label: '홈', href: '#', onClick: () => showToast({ message: '홈으로 이동', type: 'info' }) },
-                    { label: '컴포넌트', href: '#', onClick: () => showToast({ message: '컴포넌트로 이동', type: 'info' }) },
-                    { label: '탐색' },
-                  ]}
-                />
-              </div>
-            </div>
-            
-      {/* Navigation - Stepper Section */}
-      <div id="navigation-stepper" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
-          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
-                  Stepper
-                </Typography>
-              </div>
-        <div className="p-4">
-                <Stepper steps={[
-                  { label: '1단계', description: '세부 정보' },
-                  { label: '2단계', description: '설정' },
-                  { label: '3단계', description: '검토' },
-                ]} currentStep={1} />
-              </div>
-            </div>
-            
-      {/* Navigation - Accordion Section */}
-      <div id="navigation-accordion" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
-          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
-                  Accordion
-                </Typography>
-              </div>
-        <div className="p-4">
-                <Accordion
-                  items={[
-                    {
-                      title: '첫 번째 항목',
-                      content: (
-                        <div className="space-y-3">
-                          <Typography variant="p" className="text-sm text-neutral-600 dark:text-neutral-400">
-                            이것은 첫 번째 아코디언 항목의 내용입니다. 여러 줄의 텍스트와 버튼을 포함할 수 있습니다.
-                          </Typography>
-                          <Button size="small" variant="outline" onClick={() => showToast({ message: '첫 번째 항목의 액션', type: 'info' })}>
-                            액션 버튼
-                          </Button>
-                        </div>
-                      ),
-                    },
-                    {
-                      title: '두 번째 항목',
-                      content: (
-                        <Typography variant="p" className="text-sm text-neutral-600 dark:text-neutral-400">
-                          이것은 두 번째 아코디언 항목의 내용입니다. 간단한 텍스트만 포함되어 있습니다.
-                        </Typography>
-                      ),
-                    },
-                    {
-                      title: '세 번째 항목 (비활성화)',
-                      content: (
-                        <Typography variant="p" className="text-sm text-neutral-500 dark:text-neutral-500">
-                          이 항목은 비활성화되어 있습니다.
-                        </Typography>
-                      ),
-                      disabled: true,
-                    },
-                  ]}
-                  allowMultiple={false}
-                />
-              </div>
-            </div>
-
-      {/* Navigation - Tabs Section */}
-      <div id="navigation-tabs" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
-          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
-            Tabs
-          </Typography>
-        </div>
-        <div className="p-4">
-          <Tabs
-            items={[
-              { label: '탭 1', value: 'tab1', content: <Typography variant="p">탭 1 내용</Typography> },
-              { label: '탭 2', value: 'tab2', content: <Typography variant="p">탭 2 내용</Typography> },
-              { label: '탭 3', value: 'tab3', content: <Typography variant="p">탭 3 내용</Typography> },
-            ]}
-            value={activeTab}
-            onValueChange={setActiveTab}
-          />
-        </div>
-      </div>
-
-      {/* Navigation - Menu Section */}
-      <div id="navigation-menu" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
-          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
-            Menu
-          </Typography>
-        </div>
-        <div className="p-4">
-          <Menu
-            items={[
-              { id: '1', label: '메뉴 항목 1', icon: FaHome },
-              { id: '2', label: '메뉴 항목 2', icon: FaUser },
-              { id: '3', label: '메뉴 항목 3', icon: FaCog },
-            ]}
-            activeItem={activeMenuItem}
-            onItemClick={(item) => setActiveMenuItem(item.id)}
-          />
-        </div>
-      </div>
-
-      {/* Navigation - Pagination Section */}
-      <div id="navigation-pagination" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
-          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
-            Pagination
-          </Typography>
-        </div>
-        <div className="p-4">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={10}
-            onPageChange={setCurrentPage}
-          />
-        </div>
-      </div>
-
-      {/* Data Display - Card Section */}
-      <div id="data-card" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
-          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
-            Card
-          </Typography>
-        </div>
-        <div className="p-4">
-          <Card variant="default" padding="md">
-            <Typography variant="h6">카드 제목</Typography>
-            <Typography variant="p" className="mt-2">카드 내용입니다.</Typography>
-          </Card>
-        </div>
-      </div>
-
-      {/* Data Display - Badge Section */}
-      <div id="data-badge" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
-          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
-            Badge
-          </Typography>
-        </div>
-        <div className="p-4 space-x-2">
-          <Badge variant="default">기본</Badge>
-          <Badge variant="secondary">보조</Badge>
-          <Badge variant="destructive">위험</Badge>
-          <Badge variant="outline">윤곽선</Badge>
-          <Badge variant="success">성공</Badge>
-          <Badge variant="warning">경고</Badge>
-        </div>
-      </div>
-
-      {/* Data Display - Avatar Section */}
-      <div id="data-avatar" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
-          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
-            Avatar
-          </Typography>
-        </div>
-        <div className="p-4 space-x-2 flex items-center">
-          <Avatar size="xs" fallback="A" />
-          <Avatar size="sm" fallback="B" />
-          <Avatar size="md" fallback="C" />
-          <Avatar size="lg" fallback="D" />
-          <Avatar size="xl" fallback="E" />
-        </div>
-      </div>
-
-      {/* Data Display - Table Section */}
-      <div id="data-table" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
-          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
-            Table
-          </Typography>
-        </div>
-        <div className="p-4">
-          <Table
-            columns={[
-              { key: 'name', label: '이름' },
-              { key: 'age', label: '나이' },
-              { key: 'city', label: '도시' },
-            ]}
-            data={[
-              { name: '홍길동', age: 30, city: '서울' },
-              { name: '김철수', age: 25, city: '부산' },
-              { name: '이영희', age: 28, city: '대구' },
-            ]}
-          />
-        </div>
-      </div>
-
-      {/* Data Display - List Section */}
-      <div id="data-list" className="bg-white/70 backdrop-blur-2xl border border-neutral-200/60 shadow-soft-lg ring-1 ring-black/5 dark:bg-neutral-900/70 dark:border-neutral-800/60 dark:ring-white/5 hover:shadow-md transition-shadow duration-200 overflow-hidden scroll-mt-24">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2.5 border-b border-neutral-200 dark:border-neutral-700">
-          <Typography variant="h6" className="font-bold text-neutral-900 dark:text-white text-base">
-            List
-          </Typography>
-        </div>
-        <div className="p-4">
-          <List
-            items={[
-              { 
-                id: '1', 
-                content: (
-                  <div>
-                    <Typography variant="p" className="font-medium">리스트 항목 1</Typography>
-                    <Typography variant="small" className="text-neutral-500">설명 1</Typography>
-                  </div>
-                )
-              },
-              { 
-                id: '2', 
-                content: (
-                  <div>
-                    <Typography variant="p" className="font-medium">리스트 항목 2</Typography>
-                    <Typography variant="small" className="text-neutral-500">설명 2</Typography>
-                  </div>
-                )
-              },
-              { 
-                id: '3', 
-                content: (
-                  <div>
-                    <Typography variant="p" className="font-medium">리스트 항목 3</Typography>
-                    <Typography variant="small" className="text-neutral-500">설명 3</Typography>
-                  </div>
-                )
-              },
-            ]}
-          />
-        </div>
-      </div>
     </div>
   );
 };
@@ -1468,6 +1471,7 @@ function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isDesktop = useIsDesktop();
   const isSidebarOpen = isDesktop ? true : sidebarOpen;
+  const { mode, toggleTheme } = useTheme();
 
   const handleSidebarNavigate = useCallback((href: string) => {
     const targetId = href.replace('#', '');
@@ -1625,15 +1629,24 @@ function AppContent() {
         onNavigate={handleSidebarNavigate}
         className="z-50 border-r border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900"
         header={
-          <div className="flex items-center gap-3 px-4 py-4">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-white shadow-sm">
-              <FaShapes className="text-sm" />
+          <div className="flex items-center justify-between gap-3 px-4 py-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-white shadow-sm">
+                <FaShapes className="text-sm" />
+              </div>
+              <div>
+                <Typography variant="h6" className="font-bold leading-none tracking-tight text-neutral-900 dark:text-white">
+                  GaryUI
+                </Typography>
+              </div>
             </div>
-            <div>
-              <Typography variant="h6" className="font-bold leading-none tracking-tight text-neutral-900 dark:text-white">
-                GaryUI
-              </Typography>
-            </div>
+            <button
+              onClick={toggleTheme}
+              className="flex h-8 w-8 items-center justify-center text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-200 transition-colors"
+              aria-label={mode === 'light' ? '다크모드로 전환' : '라이트모드로 전환'}
+            >
+              {mode === 'light' ? <FaMoon className="h-4 w-4" /> : <FaSun className="h-4 w-4" />}
+            </button>
           </div>
         }
       />
@@ -1667,9 +1680,11 @@ function AppContent() {
 
 function App() {
   return (
-    <ToastProvider>
-      <AppContent />
-    </ToastProvider>
+    <ThemeProvider>
+      <ToastProvider>
+        <AppContent />
+      </ToastProvider>
+    </ThemeProvider>
   );
 }
 
