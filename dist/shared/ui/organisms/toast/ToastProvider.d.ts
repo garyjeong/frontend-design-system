@@ -1,0 +1,17 @@
+import { ReactNode } from 'react';
+import { VariantProps } from 'class-variance-authority';
+import { ToastItem } from './Toast';
+
+declare const toastContainerVariants: (props?: {
+    position?: "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-center" | "bottom-center";
+} & import('class-variance-authority/types').ClassProp) => string;
+interface ToastContextType {
+    showToast: (toast: Omit<ToastItem, 'id'>) => void;
+    removeToast: (id: string) => void;
+}
+export interface ToastProviderProps extends VariantProps<typeof toastContainerVariants> {
+    children: ReactNode;
+}
+export declare const ToastProvider: ({ children, position }: ToastProviderProps) => import("react/jsx-runtime").JSX.Element;
+export declare const useToast: () => ToastContextType;
+export default ToastProvider;

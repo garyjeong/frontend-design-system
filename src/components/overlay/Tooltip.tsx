@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/utils/cn';
+import { useTooltip } from '@/hooks/useTooltip';
 
 const tooltipVariants = cva(
   "absolute z-50 px-3 py-1.5 text-xs font-medium text-white bg-neutral-800 rounded-lg shadow-soft-sm opacity-0 transition-opacity duration-200 pointer-events-none dark:bg-neutral-200 dark:text-neutral-900",
@@ -25,48 +26,33 @@ const tooltipVariants = cva(
 
 export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'>,
     VariantProps<typeof tooltipVariants> {
-  children: React.ReactNode;
+  children: React.ReactElement;
   content: React.ReactNode;
   delay?: number;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
-  ({ children, content, placement = 'top', delay = 300, className, ...props }, ref) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const [showTooltip, setShowTooltip] = useState(false);
-    const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-
-    const handleMouseEnter = useCallback(() => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setIsVisible(true);
-        setShowTooltip(true);
-      }, delay);
-    }, [delay]);
-
-    const handleMouseLeave = useCallback(() => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      setShowTooltip(false);
-      timeoutRef.current = setTimeout(() => {
-        setIsVisible(false);
-      }, 200); // Allow time for transition
-    }, []);
+  ({ children, content, placement = 'top', delay = 300, className, open, defaultOpen, onOpenChange, ...props }, ref) => {
+    const { triggerProps, tooltipProps, isVisible } = useTooltip({
+      delay,
+      content,
+      open,
+      defaultOpen,
+      onOpenChange,
+    });
 
     return (
       <div
         ref={ref}
         className={cn("relative inline-block", className)}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         {...props}
       >
-        {children}
+        {React.cloneElement(children, triggerProps)}
         {isVisible && (
-          <div className={cn(tooltipVariants({ placement, visible: showTooltip }))}>
+          <div className={cn(tooltipVariants({ placement, visible: isVisible }))} {...tooltipProps}>
             {content}
             {/* Arrow */}
             <div

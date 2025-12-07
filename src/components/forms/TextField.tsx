@@ -2,6 +2,7 @@ import React, { useId } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { IconType } from 'react-icons';
 import { cn } from '@/utils/cn';
+import { useInput } from '@/hooks/useInput';
 
 const textFieldVariants = cva(
   "w-full border rounded-lg bg-white dark:bg-input-bg-dark text-text-primary-light dark:text-text-primary-dark placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-colors",
@@ -31,7 +32,7 @@ const textFieldVariants = cva(
 );
 
 export interface TextFieldProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'error'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'error' | 'disabled' | 'readOnly' | 'required' | 'value' | 'defaultValue' | 'onChange'> {
   label?: string;
   error?: string;
   helperText?: string;
@@ -39,6 +40,12 @@ export interface TextFieldProps
   iconPosition?: 'left' | 'right';
   variant?: VariantProps<typeof textFieldVariants>['variant'];
   size?: VariantProps<typeof textFieldVariants>['size'];
+  disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  value?: string;
+  defaultValue?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
@@ -53,9 +60,14 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
       id,
       icon: Icon,
       iconPosition = 'left',
-      disabled,
       'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedBy,
+      disabled: disabledProp,
+      readOnly: readOnlyProp,
+      required: requiredProp,
+      value: valueProp,
+      defaultValue,
+      onChange,
       ...props
     },
     ref,
@@ -66,6 +78,21 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const helperId = helperText ? `${inputId}-helper` : undefined;
     const describedBy = [errorId, helperId, ariaDescribedBy].filter(Boolean).join(' ') || undefined;
 
+    const { inputProps, disabled, required } = useInput({
+      inputRef: ref,
+      disabled: disabledProp,
+      readOnly: readOnlyProp,
+      required: requiredProp,
+      value: valueProp,
+      defaultValue,
+      onChange,
+      id: inputId,
+      'aria-label': ariaLabel || label,
+      'aria-invalid': error ? 'true' : undefined,
+      'aria-describedby': describedBy,
+      ...props,
+    });
+
     return (
       <div className={cn("flex flex-col group w-full", className)}>
         {label && (
@@ -74,7 +101,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5 block group-focus-within:text-primary-500 dark:group-focus-within:text-primary-400 transition-colors"
           >
             {label}
-            {props.required && <span className="text-error-500 ml-1" aria-label="required">*</span>}
+            {required && <span className="text-error-500 ml-1" aria-label="required">*</span>}
           </label>
         )}
         <div className="relative">
@@ -84,8 +111,6 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             </div>
           )}
           <input
-            ref={ref}
-            id={inputId}
             className={cn(
               textFieldVariants({ variant, size, error: !!error }),
               Icon && iconPosition === 'left' && "pl-10",
@@ -93,10 +118,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               disabled && "disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed dark:disabled:bg-neutral-900",
               !error && "hover:border-neutral-300 dark:hover:border-neutral-600"
             )}
-            aria-label={ariaLabel || label}
-            aria-invalid={error ? 'true' : undefined}
-            aria-describedby={describedBy}
-            {...props}
+            {...inputProps}
           />
           {Icon && iconPosition === 'right' && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500 pointer-events-none transition-colors group-focus-within:text-primary-500">

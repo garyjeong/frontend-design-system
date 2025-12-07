@@ -11,7 +11,7 @@ export default defineConfig(({ command, mode }) => {
       react(),
       // DTS는 빌드 모드에서만 실행
       !isDev && dts({
-        include: ['src/components/'],
+        include: ['src/shared/'],
       }),
     ].filter(Boolean),
     resolve: {

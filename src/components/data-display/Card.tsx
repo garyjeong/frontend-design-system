@@ -1,6 +1,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/utils/cn';
+import { useCard } from '@/hooks/useCard';
 
 export const cardVariants = cva(
   "flex flex-col bg-white dark:bg-neutral-800 transition-all duration-300",
@@ -36,53 +37,194 @@ export const cardVariants = cva(
 export interface CardProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof cardVariants> {
-  title?: string;
-  headerAction?: React.ReactNode;
+  interactive?: boolean;
+}
+
+interface CardComposition {
+  Header: typeof CardHeader;
+  Title: typeof CardTitle;
+  HeaderAction: typeof CardHeaderAction;
+  Content: typeof CardContent;
+  Footer: typeof CardFooter;
 }
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  (
+    {
+      className,
+      variant,
+      hoverable: hoverableProp,
+      padding,
+      children,
+      interactive: interactiveProp,
+      ...props
+    },
+    ref
+  ) => {
+    const { cardProps, hoverable } = useCard({
+      cardRef: ref,
+      interactive: interactiveProp,
+      hoverable: hoverableProp,
+      ...props,
+    });
+
+    return (
+      <div
+        className={cn(
+          cardVariants({
+            variant,
+            hoverable: hoverable,
+            padding,
+          }),
+          className
+        )}
+        {...cardProps}
+      >
+        {children}
+      </div>
+    );
+  }
+) as React.ForwardRefExoticComponent<CardProps & React.RefAttributes<HTMLDivElement>> & CardComposition;
+
+Card.displayName = "Card";
+
+interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  padding?: VariantProps<typeof cardVariants>['padding'];
+}
+
+const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ({
     className,
-    variant,
-    hoverable,
     padding,
-    title,
-    headerAction,
+    children,
+    ...props
+  }, ref) => {
+    return (
+      <header 
+        ref={ref}
+        className={cn(
+          "flex items-center justify-between gap-4",
+          padding === 'none' ? 'p-0' : padding === 'sm' ? 'px-4 pt-4 pb-0' : padding === 'lg' ? 'px-8 pt-8 pb-0' : 'px-6 pt-6 pb-0',
+          padding !== 'none' && "border-b border-neutral-200 dark:border-neutral-700 mb-0",
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </header>
+    );
+  }
+);
+
+CardHeader.displayName = "CardHeader";
+
+interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
+
+const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
+  ({
+    className,
+    children,
+    ...props
+  }, ref) => {
+    return (
+      <h3 
+        ref={ref}
+        className={cn("text-lg font-bold text-neutral-900 dark:text-white", className)}
+        {...props}
+      >
+        {children}
+      </h3>
+    );
+  }
+);
+
+CardTitle.displayName = "CardTitle";
+
+interface CardHeaderActionProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const CardHeaderAction = React.forwardRef<HTMLDivElement, CardHeaderActionProps>(
+  ({
+    className,
     children,
     ...props
   }, ref) => {
     return (
       <div 
         ref={ref}
-        className={cn(cardVariants({ variant, hoverable, padding }), className)} 
+        className={cn("flex-shrink-0", className)}
         {...props}
       >
-        {(title || headerAction) && (
-          <header className={cn(
-            "flex items-start justify-between gap-4",
-            padding === 'none' ? 'p-0' : padding === 'sm' ? 'px-4 pt-4' : padding === 'lg' ? 'px-8 pt-8' : 'px-6 pt-6',
-            padding !== 'none' && "border-b border-neutral-200 dark:border-neutral-700"
-          )}>
-            {title && (
-              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
-                {title}
-              </h3>
-            )}
-            {headerAction && <div className="flex-shrink-0">{headerAction}</div>}
-          </header>
-        )}
-        
-        <main className={cn(
-          "flex-1",
-          padding === 'none' ? 'p-0' : padding
-        )}>
-          {children}
-        </main>
+        {children}
       </div>
     );
   }
 );
 
-Card.displayName = "Card";
+CardHeaderAction.displayName = "CardHeaderAction";
+
+interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  padding?: VariantProps<typeof cardVariants>['padding'];
+}
+
+const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
+  ({
+    className,
+    padding,
+    children,
+    ...props
+  }, ref) => {
+    return (
+      <main 
+        ref={ref}
+        className={cn(
+          "flex-1",
+          padding === 'none' ? 'p-0' : padding === 'sm' ? 'px-4 pt-4 pb-4' : padding === 'lg' ? 'px-8 pt-8 pb-8' : 'px-6 pt-6 pb-6',
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </main>
+    );
+  }
+);
+
+CardContent.displayName = "CardContent";
+
+interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  padding?: VariantProps<typeof cardVariants>['padding'];
+}
+
+const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
+  ({
+    className,
+    padding,
+    children,
+    ...props
+  }, ref) => {
+    return (
+      <footer 
+        ref={ref}
+        className={cn(
+          "flex items-center justify-end gap-4",
+          padding === 'none' ? 'p-0' : padding === 'sm' ? 'px-4 pt-0 pb-4' : padding === 'lg' ? 'px-8 pt-0 pb-8' : 'px-6 pt-0 pb-6',
+          padding !== 'none' && "border-t border-neutral-200 dark:border-neutral-700 mt-0",
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </footer>
+    );
+  }
+);
+
+CardFooter.displayName = "CardFooter";
+
+Card.Header = CardHeader;
+Card.Title = CardTitle;
+Card.HeaderAction = CardHeaderAction;
+Card.Content = CardContent;
+Card.Footer = CardFooter;
 
 export default Card;

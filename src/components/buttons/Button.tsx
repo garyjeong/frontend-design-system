@@ -2,6 +2,7 @@ import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { IconType } from 'react-icons';
 import { cn } from '@/utils/cn';
+import { useButton } from '@/hooks/useButton';
 
 export const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-background-dark disabled:cursor-not-allowed disabled:opacity-50 select-none active:scale-[0.98]",
@@ -46,31 +47,35 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   icon?: IconType;
   iconPosition?: 'left' | 'right';
-  isLoading?: boolean;
+  loading?: boolean;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, fullWidth, rounded, icon: Icon, iconPosition = 'left', children, disabled, isLoading, ...props }, ref) => {
+  ({ className, variant, size, fullWidth, rounded, icon: Icon, iconPosition = 'left', children, disabled: disabledProp, loading: loadingProp, onClick, ...props }, ref) => {
+    const { buttonProps, loading } = useButton({
+      buttonRef: ref,
+      disabled: disabledProp,
+      loading: loadingProp,
+      onClick,
+      ...props,
+    });
+
     const isIconOnly = !children && !!Icon;
     
     return (
       <button
-        ref={ref}
         className={cn(buttonVariants({ variant, size: isIconOnly ? 'icon' : size, fullWidth, rounded }), className)}
-        disabled={disabled || isLoading}
-        aria-busy={isLoading}
-        aria-disabled={disabled || isLoading}
-        {...props}
+        {...buttonProps}
       >
-        {isLoading && (
+        {loading && (
           <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
         )}
-        {!isLoading && Icon && iconPosition === 'left' && <Icon className="text-lg" />}
+        {!loading && Icon && iconPosition === 'left' && <Icon className="text-lg" />}
         {children}
-        {!isLoading && Icon && iconPosition === 'right' && <Icon className="text-lg" />}
+        {!loading && Icon && iconPosition === 'right' && <Icon className="text-lg" />}
       </button>
     );
   }

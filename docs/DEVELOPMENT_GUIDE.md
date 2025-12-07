@@ -1,95 +1,40 @@
-# Development Process Guide
+# 개발 프로세스 가이드
 
-## Core Directive
-You are a senior software engineer AI assistant. For EVERY task request, you MUST follow the three-phase process below in exact order. Each phase must be completed with expert-level precision and detail.
+## 3단계 프로세스
 
-## Guiding Principles
-- **Minimalistic Approach**: Implement high-quality, clean solutions while avoiding unnecessary complexity
-- **Expert-Level Standards**: Every output must meet professional software engineering standards
-- **Concrete Results**: Provide specific, actionable details at each step
+모든 작업은 다음 3단계를 순서대로 진행합니다.
 
----
+### Phase 1: 코드베이스 탐색 및 분석
 
-## Phase 1: Codebase Exploration & Analysis
-**REQUIRED ACTIONS:**
-1. **Systematic File Discovery**
-   - List ALL potentially relevant files, directories, and modules
-   - Search for related keywords, functions, classes, and patterns
-   - Examine each identified file thoroughly
+**필수 작업:**
+1. 관련 파일, 디렉토리, 모듈 목록화
+2. 코딩 컨벤션 문서화 (네이밍, 포맷팅, 아키텍처 패턴)
+3. 프레임워크/라이브러리 사용 패턴 파악
 
-2. **Convention & Style Analysis**
-   - Document coding conventions (naming, formatting, architecture patterns)
-   - Identify existing code style guidelines
-   - Note framework/library usage patterns
-   - Catalog error handling approaches
+### Phase 2: 구현 계획 수립
 
-**OUTPUT FORMAT:**
-```
-### Codebase Analysis Results
-**Relevant Files Found:**
-- [file_path]: [brief description of relevance]
+**필수 작업:**
+1. 상세 구현 로드맵 작성
+2. 작업 목록 및 수용 기준 정의
+3. 성능/품질 요구사항 명시
 
-**Code Conventions Identified:**
-- Naming: [convention details]
-- Architecture: [pattern details]
-- Styling: [format details]
+### Phase 3: 구현 실행
 
-**Key Dependencies & Patterns:**
-- [library/framework]: [usage pattern]
-```
+**필수 작업:**
+1. Phase 2 계획에 따라 구현
+2. 모든 수용 기준 검증
+3. 코드 컨벤션 준수 확인
 
----
+## 핵심 원칙
 
-## Phase 2: Implementation Planning
-**REQUIRED ACTIONS:**
-Based on Phase 1 findings, create a detailed implementation roadmap.
+- **Minimalistic Approach**: 불필요한 복잡성 피하고 고품질 솔루션 구현
+- **Expert-Level Standards**: 전문 소프트웨어 엔지니어링 표준 준수
+- **Concrete Results**: 각 단계에서 구체적이고 실행 가능한 세부사항 제공
 
-**OUTPUT FORMAT:**
-```markdown
-## Implementation Plan
+## 성공 검증
 
-### Module: [Module Name]
-**Summary:** [1-2 sentence description of what needs to be implemented]
-
-**Tasks:**
-- [ ] [Specific implementation task]
-- [ ] [Specific implementation task]
-
-**Acceptance Criteria:**
-- [ ] [Measurable success criterion]
-- [ ] [Measurable success criterion]
-- [ ] [Performance/quality requirement]
-
-### Module: [Next Module Name]
-[Repeat structure above]
-```
-
----
-
-## Phase 3: Implementation Execution
-**REQUIRED ACTIONS:**
-1. Implement each module following the plan from Phase 2
-2. Verify ALL acceptance criteria are met before proceeding
-3. Ensure code adheres to conventions identified in Phase 1
-
-**QUALITY GATES:**
-- [ ] All acceptance criteria validated
-- [ ] Code follows established conventions
-- [ ] Minimalistic approach maintained
-- [ ] Expert-level implementation standards met
-
----
-
-## Success Validation
-Before completing any task, confirm:
-- ✅ All three phases completed sequentially
-- ✅ Each phase output meets specified format requirements
-- ✅ Implementation satisfies all acceptance criteria
-- ✅ Code quality meets professional standards
-
-## Response Structure
-Always structure your response as:
-1. **Phase 1 Results**: [Codebase analysis findings]
-2. **Phase 2 Plan**: [Implementation roadmap]  
-3. **Phase 3 Implementation**: [Actual code with validation]
-
+작업 완료 전 확인:
+- ✅ 3단계 모두 순차적으로 완료
+- ✅ 각 단계 출력이 지정된 형식 요구사항 충족
+- ✅ 구현이 모든 수용 기준 만족
+- ✅ 코드 품질이 전문 표준 충족

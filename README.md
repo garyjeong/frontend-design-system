@@ -45,10 +45,24 @@ pnpm build-storybook      # Storybook 정적 빌드
 ```
 frontend-design-system/
 ├── src/
-│   ├── components/          # Atomic Design 분류 컴포넌트 (Tailwind + CVA)
-│   ├── dev/                 # Vite 데모/플레이그라운드(App.tsx, main.tsx)
-│   ├── shared/contexts/     # 테마 등 공용 컨텍스트
-│   └── utils/               # 유틸리티 (e.g., cn)
+│   ├── shared/              # FSD Shared 레이어
+│   │   ├── ui/              # UI 컴포넌트 (Atomic Design)
+│   │   │   ├── atoms/      # 기본 요소 (Button, Input, Avatar 등)
+│   │   │   ├── molecules/  # 복합 요소 (Card, FormField 등)
+│   │   │   ├── organisms/  # 복잡한 요소 (Table, Modal, Menu 등)
+│   │   │   └── templates/ # 레이아웃 템플릿 (Layout, Header 등)
+│   │   ├── lib/             # 유틸리티, hooks
+│   │   │   ├── hooks/      # 커스텀 훅
+│   │   │   ├── utils/      # 유틸리티 함수
+│   │   │   └── constants/  # 상수
+│   │   ├── api/             # API 관련 (확장 가능)
+│   │   └── config/          # 설정
+│   │       └── theme/      # 테마 설정
+│   ├── entities/            # 도메인 엔티티 (필요시 확장)
+│   ├── features/            # 복합 기능 (필요시 확장)
+│   ├── widgets/             # 복합 위젯 (필요시 확장)
+│   └── app/                  # 앱 레벨
+│       └── dev/              # Dev playground
 ├── providers/ThemeProvider.tsx
 ├── styles/                  # Tailwind 전역 스타일 (globals.css 등)
 ├── docs/                    # 문서 (PRD, ARCHITECTURE, CODE_GUIDELINES 등)
@@ -103,8 +117,10 @@ pnpm test:coverage
 ## 📚 Documentation & Playground
 
 - Storybook: `pnpm storybook` (컴포넌트 문서/데모)
-- Vite Dev Playground: `pnpm dev` → `src/dev/App.tsx`에서 전체 컴포넌트 탐색
+- Vite Dev Playground: `pnpm dev` → `src/app/dev/App.tsx`에서 전체 컴포넌트 탐색
 - Style Guide: `docs/STYLE_GUIDE.md`
+- Architecture: `docs/ARCHITECTURE.md` (FSD + Atomic Design 구조)
+- Components: `docs/COMPONENTS.md` (구현 현황)
 
 ## 🚧 Roadmap
 

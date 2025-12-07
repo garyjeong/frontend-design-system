@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState, useCallback, ReactNode } from 'react';
 
-type ThemeMode = 'light' | 'dark';
+export type ThemeMode = 'light' | 'dark';
 
 const THEME_STORAGE_KEY = 'theme';
 
