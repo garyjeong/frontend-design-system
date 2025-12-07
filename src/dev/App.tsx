@@ -53,9 +53,6 @@ const DashboardView = () => {
           <Typography variant="h2" className="font-bold tracking-tight text-neutral-900 dark:text-white">
             대시보드
           </Typography>
-          <Typography variant="p" className="text-neutral-500 dark:text-neutral-400">
-            프로젝트 성과 및 활동 개요.
-          </Typography>
         </div>
         <div className="flex gap-3">
           <Button variant="outline">보고서 다운로드</Button>
@@ -386,7 +383,7 @@ function AppContent() {
             </div>
             <div>
               <Typography variant="h6" className="font-bold leading-none tracking-tight text-neutral-900 dark:text-white">
-                부스터
+                GaryUI
               </Typography>
             </div>
           </div>

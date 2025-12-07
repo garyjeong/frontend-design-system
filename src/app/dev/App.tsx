@@ -85,9 +85,6 @@ const DashboardView = () => {
           <Typography variant="h1" className="font-bold tracking-tight text-neutral-900 dark:text-white">
             대시보드
           </Typography>
-          <Typography variant="p" color="muted">
-            프로젝트 성과 및 활동 개요.
-          </Typography>
         </div>
         <div className="flex gap-3">
           <Button variant="outline" onClick={() => showToast({ message: '보고서 다운로드가 시작되었습니다.', type: 'info' })}>
@@ -634,9 +631,6 @@ const UnifiedPageView = () => {
           <div>
             <Typography variant="h1" className="font-bold tracking-tight text-neutral-900 dark:text-white">
               대시보드
-            </Typography>
-            <Typography variant="p" color="muted">
-              프로젝트 성과 및 활동 개요.
             </Typography>
           </div>
           <div className="flex gap-3">
@@ -1542,7 +1536,7 @@ function AppContent() {
         label: '개요',
         icon: FaHome,
         children: [
-          { label: '대시보드', href: '#dashboard', icon: FaHome },
+      { label: '대시보드', href: '#dashboard', icon: FaHome },
         ],
       },
       {
@@ -1565,7 +1559,7 @@ function AppContent() {
         label: '입력',
         icon: FaMousePointer,
         children: [
-          { label: '버튼', href: '#buttons', icon: FaMousePointer },
+      { label: '버튼', href: '#buttons', icon: FaMousePointer },
           { label: '텍스트 필드', href: '#forms-textfield', icon: FaKeyboard },
           { label: '텍스트 영역', href: '#forms-textarea', icon: FaFont },
           { label: '스위치', href: '#forms-switch', icon: FaCog },
@@ -1637,7 +1631,7 @@ function AppContent() {
             </div>
             <div>
               <Typography variant="h6" className="font-bold leading-none tracking-tight text-neutral-900 dark:text-white">
-                부스터
+                GaryUI
               </Typography>
             </div>
           </div>
@@ -1655,7 +1649,7 @@ function AppContent() {
                   <FaThList />
                 </Button>
                 <Typography variant="h6" className="font-semibold text-neutral-900 dark:text-white">
-                  부스터
+                  GaryUI
                 </Typography>
               </>
             )}
