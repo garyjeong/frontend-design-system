@@ -106,6 +106,17 @@ const applyCustomPaletteToRoot = (palette: Partial<ColorScale>, mode: ThemeMode)
     }
     chosen = candidate;
     root.style.setProperty('--theme-primary-700', chosen);
+    // attempt to create an even darker variant for --theme-primary-800 (used by buttons)
+    let chosen800 = chosen;
+    let ratio800 = contrastRatio(fg, chosen800);
+    let step800 = 0;
+    while (ratio800 < 4.5 && step800 < 10) {
+      step800 += 1;
+      const amt800 = 0.08 * (step800 + 1);
+      chosen800 = darkenHex(chosen800, amt800);
+      ratio800 = contrastRatio(fg, chosen800);
+    }
+    root.style.setProperty('--theme-primary-800', chosen800);
   }
 };
 

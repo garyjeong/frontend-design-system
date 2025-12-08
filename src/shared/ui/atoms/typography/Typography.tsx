@@ -19,7 +19,7 @@ const typographyVariants = cva(
       },
       color: {
         default: "text-neutral-900 dark:text-white",
-        primary: "text-primary-700 dark:text-primary-400",
+        primary: "text-primary-800 dark:text-primary-400",
         secondary: "text-neutral-500 dark:text-neutral-400",
         success: "text-success-500 dark:text-success-400",
         error: "text-error-500 dark:text-error-400",
