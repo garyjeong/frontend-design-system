@@ -10,5 +10,5 @@ interface UseFocusRestoreProps {
      */
     restoreElementRef?: React.RefObject<HTMLElement>;
 }
-export declare const useFocusRestore: (props: UseFocusRestoreProps) => void;
+export declare const useFocusRestore: ({ enabled }?: UseFocusRestoreProps) => React.RefObject<HTMLElement>;
 export {};

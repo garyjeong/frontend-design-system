@@ -6,6 +6,8 @@ export declare const radioVariants: (props?: {
 } & import('class-variance-authority/types').ClassProp) => string;
 export interface RadioProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'>, VariantProps<typeof radioVariants> {
     label?: string;
+    error?: string;
+    helperText?: string;
 }
 export declare const Radio: React.ForwardRefExoticComponent<RadioProps & React.RefAttributes<HTMLInputElement>>;
 export default Radio;

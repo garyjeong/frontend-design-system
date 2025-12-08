@@ -1,6 +1,6 @@
 
 import { renderHook, act } from '@testing-library/react';
-import { useInput } from '../src/hooks/useInput';
+import { useInput } from '../../../src/hooks/useInput';
 import { describe, it, expect, vi } from 'vitest';
 
 describe('useInput', () => {
@@ -29,8 +29,11 @@ describe('useInput', () => {
   });
 
   it('should update value when controlled value prop changes', () => {
-    const { result, rerender } = renderHook(({ value }) => useInput({ value }));
-    expect(result.current.inputProps.value).toBe(undefined); // Initial render with no value
+    const { result, rerender } = renderHook(
+      ({ value }: { value?: string }) => useInput({ value }),
+      { initialProps: { value: undefined } }
+    );
+    expect(result.current.inputProps.value).toBe(''); // Initial render with no value
 
     rerender({ value: 'new value' });
     expect(result.current.inputProps.value).toBe('new value');

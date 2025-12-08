@@ -26,5 +26,5 @@ export interface MenuProps extends VariantProps<typeof menuVariants> {
     className?: string;
     onItemClick?: (item: MenuItem) => void;
 }
-export declare const Menu: ({ items, activeItem, orientation, variant, className, onItemClick, }: MenuProps) => import("react/jsx-runtime").JSX.Element;
+export declare const Menu: ({ items, activeItem, orientation, variant, className, onItemClick }: MenuProps) => import("react/jsx-runtime").JSX.Element;
 export default Menu;

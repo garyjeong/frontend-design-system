@@ -1,9 +1,7 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/shared/lib/utils/cn';
-import { Portal } from '@/shared/lib/utils/portal';
 import { usePopover } from '@/shared/lib/hooks/usePopover';
-import { computePopperPosition } from '@/shared/lib/utils/popper';
 
 const popoverVariants = cva(
   "absolute z-50 bg-white dark:bg-neutral-800 shadow-xl border border-neutral-200 dark:border-neutral-700 min-w-[200px] max-w-sm opacity-0 transition-all duration-200",

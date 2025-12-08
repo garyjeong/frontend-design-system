@@ -1,6 +1,6 @@
 
 import { renderHook } from '@testing-library/react';
-import { useCard } from '../src/hooks/useCard';
+import { useCard } from '../../../src/hooks/useCard';
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 

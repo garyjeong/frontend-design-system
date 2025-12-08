@@ -3,12 +3,12 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/shared/lib/utils/cn';
 
 const footerVariants = cva(
-  "border-t border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800",
+  "bg-white dark:bg-neutral-800",
   {
     variants: {
       variant: {
-        default: "py-8 px-6",
-        minimal: "py-4 px-6",
+        default: "py-8 px-6 border-t border-neutral-200 dark:border-neutral-700",
+        minimal: "py-4 px-6 border-none",
       },
     },
     defaultVariants: {
@@ -20,18 +20,12 @@ const footerVariants = cva(
 export interface FooterProps
   extends React.HTMLAttributes<HTMLElement>,
     VariantProps<typeof footerVariants> {
-  links?: Array<{ label: string; href: string }>;
+  links?: Array<{ label: string; href: string }>; // kept for legacy tests
   copyright?: string;
 }
 
 export const Footer = React.forwardRef<HTMLElement, FooterProps>(
-  ({
-    className,
-    variant,
-    links,
-    copyright,
-    ...props
-  }, ref) => {
+  ({ className, variant, links, copyright, ...props }, ref) => {
     return (
       <footer
         ref={ref}
@@ -45,7 +39,7 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(
               <a
                 key={index}
                 href={link.href}
-                className="text-sm text-neutral-600 hover:text-primary-500 dark:text-neutral-400 dark:hover:text-primary-400 transition-colors"
+                className="text-sm text-neutral-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-primary-400 transition-colors"
               >
                 {link.label}
               </a>

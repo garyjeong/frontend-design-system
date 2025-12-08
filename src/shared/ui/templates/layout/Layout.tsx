@@ -19,12 +19,14 @@ const layoutVariants = cva(
 );
 
 export interface LayoutProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'fullHeight' | 'sidebarPosition'>,
     VariantProps<typeof layoutVariants> {
   header?: React.ReactNode;
   sidebar?: React.ReactNode;
   footer?: React.ReactNode;
   children: React.ReactNode;
+  fullHeight?: boolean;
+  sidebarPosition?: 'left' | 'right';
 }
 
 export const Layout = React.forwardRef<HTMLDivElement, LayoutProps>(
@@ -35,18 +37,21 @@ export const Layout = React.forwardRef<HTMLDivElement, LayoutProps>(
     sidebar,
     footer,
     children,
+    fullHeight,
+    sidebarPosition = 'left',
     ...props
   }, ref) => {
     return (
       <div
         ref={ref}
-        className={cn(layoutVariants({ variant }), className)}
+        className={cn(layoutVariants({ variant }), fullHeight && 'min-h-screen', className)}
         {...props}
       >
         {header && <header>{header}</header>}
         <div className="flex flex-1 overflow-hidden">
-          {sidebar && <aside className="flex-shrink-0">{sidebar}</aside>}
+          {sidebarPosition === 'left' && sidebar && <aside className="flex-shrink-0">{sidebar}</aside>}
           <main className="flex-1 overflow-auto">{children}</main>
+          {sidebarPosition === 'right' && sidebar && <aside className="flex-shrink-0">{sidebar}</aside>}
         </div>
         {footer && <footer>{footer}</footer>}
       </div>

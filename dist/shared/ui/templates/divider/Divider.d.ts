@@ -3,7 +3,7 @@ import { VariantProps } from 'class-variance-authority';
 
 declare const dividerVariants: (props?: {
     orientation?: "horizontal" | "vertical";
-    variant?: "solid" | "dashed" | "dotted";
+    variant?: "dashed" | "dotted" | "solid";
 } & import('class-variance-authority/types').ClassProp) => string;
 export interface DividerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof dividerVariants> {
     label?: string;

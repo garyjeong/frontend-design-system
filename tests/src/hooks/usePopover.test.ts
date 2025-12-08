@@ -1,6 +1,6 @@
 
 import { renderHook, act, fireEvent } from '@testing-library/react';
-import { usePopover } from '../src/hooks/usePopover';
+import { usePopover } from '../../../src/hooks/usePopover';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import React from 'react';
 
@@ -15,7 +15,7 @@ describe('usePopover', () => {
     document.body.appendChild(popoverElement);
 
     // Mock useFocusTrap to prevent actual focus management interference in unit tests
-    vi.mock('../src/hooks/useFocusTrap', () => ({
+    vi.mock('../../../../src/hooks/useFocusTrap', () => ({
       useFocusTrap: vi.fn(),
     }));
   });
@@ -67,6 +67,22 @@ describe('usePopover', () => {
   it('should close popover when clicking outside (click trigger)', () => {
     const { result } = renderHook(() => usePopover({ content: 'Test content', trigger: 'click' }));
 
+    // Set refs to actual DOM elements
+    if (result.current.triggerProps.ref) {
+      if (typeof result.current.triggerProps.ref === 'function') {
+        result.current.triggerProps.ref(triggerElement);
+      } else {
+        (result.current.triggerProps.ref as React.MutableRefObject<HTMLElement | null>).current = triggerElement;
+      }
+    }
+    if (result.current.popoverProps.ref) {
+      if (typeof result.current.popoverProps.ref === 'function') {
+        result.current.popoverProps.ref(popoverElement);
+      } else {
+        (result.current.popoverProps.ref as React.MutableRefObject<HTMLDivElement | null>).current = popoverElement;
+      }
+    }
+
     act(() => {
       result.current.triggerProps.onClick?.({} as React.MouseEvent<HTMLElement>);
     });
@@ -80,6 +96,22 @@ describe('usePopover', () => {
 
   it('should not close popover when clicking inside trigger or popover content', () => {
     const { result } = renderHook(() => usePopover({ content: 'Test content', trigger: 'click' }));
+
+    // Set refs to actual DOM elements
+    if (result.current.triggerProps.ref) {
+      if (typeof result.current.triggerProps.ref === 'function') {
+        result.current.triggerProps.ref(triggerElement);
+      } else {
+        (result.current.triggerProps.ref as React.MutableRefObject<HTMLElement | null>).current = triggerElement;
+      }
+    }
+    if (result.current.popoverProps.ref) {
+      if (typeof result.current.popoverProps.ref === 'function') {
+        result.current.popoverProps.ref(popoverElement);
+      } else {
+        (result.current.popoverProps.ref as React.MutableRefObject<HTMLDivElement | null>).current = popoverElement;
+      }
+    }
 
     act(() => {
       result.current.triggerProps.onClick?.({} as React.MouseEvent<HTMLElement>);
@@ -98,7 +130,10 @@ describe('usePopover', () => {
   });
 
   it('should be controlled by open prop', () => {
-    const { result, rerender } = renderHook(({ open }) => usePopover({ content: 'Test content', open }));
+    const { result, rerender } = renderHook(
+      ({ open }: { open?: boolean }) => usePopover({ content: 'Test content', open }),
+      { initialProps: { open: undefined } }
+    );
 
     expect(result.current.isOpen).toBe(false);
 

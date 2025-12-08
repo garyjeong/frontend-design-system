@@ -1,6 +1,6 @@
 
 import { renderHook, act, fireEvent } from '@testing-library/react';
-import { useTooltip } from '../src/hooks/useTooltip';
+import { useTooltip } from '../../../src/hooks/useTooltip';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import React from 'react';
 
@@ -71,7 +71,10 @@ describe('useTooltip', () => {
   });
 
   it('should be controlled by open prop', () => {
-    const { result, rerender } = renderHook(({ open }) => useTooltip({ content: 'Test content', open }));
+    const { result, rerender } = renderHook(
+      ({ open }: { open?: boolean }) => useTooltip({ content: 'Test content', open }),
+      { initialProps: { open: undefined } }
+    );
 
     expect(result.current.isVisible).toBe(false);
 

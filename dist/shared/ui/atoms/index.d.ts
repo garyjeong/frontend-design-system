@@ -9,6 +9,7 @@ export * from './radio';
 export * from './select';
 export * from './slider';
 export * from './switch';
+export * from './theme-toggle';
 export * from './textarea';
 export * from './textarea-autosize';
 export * from './tooltip';

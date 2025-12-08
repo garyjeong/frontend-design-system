@@ -1,6 +1,6 @@
 
 import { render, screen, cleanup } from '@testing-library/react';
-import { Portal } from '../src/utils/portal';
+import { Portal } from '../../../src/shared/lib/utils/portal';
 import { describe, it, expect, afterEach } from 'vitest';
 import React from 'react';
 

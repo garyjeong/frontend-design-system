@@ -1,7 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
-import { Layout, Header, Footer, Sidebar } from './index';
+import { Layout } from './Layout';
+import Header from '../header/Header';
+import Footer from '../footer/Footer';
+import Sidebar from '../sidebar/Sidebar';
 import '@testing-library/jest-dom';
 
 
@@ -56,7 +59,7 @@ describe('Header', () => {
     render(
         <Header 
             logo={<span>Logo</span>} 
-            navigation={<nav>Navigation</nav>}
+            nav={<nav>Navigation</nav>}
             actions={<button type="button">Action</button>}
         />
     );
@@ -72,8 +75,9 @@ describe('Header', () => {
 
   it('applies transparent variant', () => {
     const { container } = render(<Header variant="transparent" />);
-    expect(container.querySelector('header')).toHaveClass('bg-transparent');
-    expect(container.querySelector('header')).not.toHaveClass('shadow-sm');
+    const headerEl = container.querySelector('header');
+    expect(headerEl).toHaveClass('bg-transparent');
+    expect(headerEl).not.toHaveClass('shadow-sm');
   });
 });
 
@@ -82,13 +86,11 @@ describe('Footer', () => {
         render(
             <Footer 
                 copyright="© 2024"
-                links={<a href="/about">About</a>}
-                social={<a href="/twitter">Twitter</a>}
+                links={[{label: 'About', href: '/about'}]}
             />
         );
         expect(screen.getByText('© 2024')).toBeInTheDocument();
         expect(screen.getByText('About')).toBeInTheDocument();
-        expect(screen.getByText('Twitter')).toBeInTheDocument();
       });
 
   it('applies minimal variant', () => {
@@ -122,15 +124,14 @@ describe('Sidebar', () => {
   });
 
   it('applies custom width', () => {
-    const { container } = render(<Sidebar width="320px">Content</Sidebar>);
+    const { container } = render(<Sidebar isOpen items={[]} width="320px">Content</Sidebar>);
     const sidebar = container.querySelector('aside');
     expect(sidebar).toHaveStyle('width: 320px');
   });
 
-  it('is hidden when isOpen is false', () => {
-    render(<Sidebar isOpen={false} position="left">Content</Sidebar>);
-    // The overlay should not be visible
-    const overlay = document.querySelector('.fixed.inset-0.bg-black\\/50');
-    expect(overlay).toHaveClass('invisible');
+  it('is not rendered when isOpen is false', () => {
+    render(<Sidebar isOpen={false} items={[]}>Content</Sidebar>);
+    const sidebar = screen.queryByRole('navigation');
+    expect(sidebar).not.toBeInTheDocument();
   });
 });

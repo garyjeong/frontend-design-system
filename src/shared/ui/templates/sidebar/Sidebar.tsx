@@ -20,36 +20,48 @@ const sidebarVariants = cva(
         default: "",
         collapsible: "",
       },
+      position: {
+        left: "left-0",
+        right: "right-0",
+      }
     },
     defaultVariants: {
       variant: "default",
+      position: 'left'
     },
   }
 );
 
 export interface SidebarProps
-  extends React.HTMLAttributes<HTMLElement>,
+  extends Omit<React.HTMLAttributes<HTMLElement>, 'position'>,
     VariantProps<typeof sidebarVariants> {
-  isOpen: boolean;
+  isOpen?: boolean;
   onClose?: () => void;
-  items: SidebarNavItem[];
+  items?: SidebarNavItem[];
   onNavigate?: (href: string) => void;
   header?: React.ReactNode;
   collapsible?: boolean;
   showThemeToggle?: boolean;
+  width?: string;
+  position?: 'left' | 'right';
+  children?: React.ReactNode;
 }
 
 export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
-  ({
+  (
+    {
     className,
     variant,
-    isOpen: _isOpen,
+      isOpen = true,
     onClose,
-    items,
+      items = [],
     onNavigate,
     header,
-    collapsible: _collapsible,
-    showThemeToggle = false,
+      collapsible = false,
+      showThemeToggle = false,
+      width,
+      position = 'left',
+      children,
     ...props
   }, ref) => {
     const [activeHref, setActiveHref] = useState<string>("");
@@ -64,24 +76,19 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
       return () => window.removeEventListener("hashchange", updateActive);
     }, []);
 
-    // 활성 항목이 속한 그룹 자동 펼치기
     useEffect(() => {
       if (!activeHref) return;
-      
       const findGroupForHref = (items: SidebarNavItem[], targetHref: string): string | null => {
         for (const item of items) {
           if (item.children) {
             const hasActiveChild = item.children.some(child => child.href === targetHref);
-            if (hasActiveChild) {
-              return item.label;
-            }
+            if (hasActiveChild) return item.label;
             const found = findGroupForHref(item.children, targetHref);
             if (found) return found;
           }
         }
         return null;
       };
-
       const groupLabel = findGroupForHref(items, activeHref);
       if (groupLabel) {
         setExpandedGroups(prev => new Set([...prev, groupLabel]));
@@ -96,16 +103,11 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
     const toggleGroup = (groupLabel: string) => {
       setExpandedGroups(prev => {
         const next = new Set(prev);
-        if (next.has(groupLabel)) {
-          next.delete(groupLabel);
-        } else {
-          next.add(groupLabel);
-        }
+        if (next.has(groupLabel)) next.delete(groupLabel); else next.add(groupLabel);
         return next;
       });
     };
 
-    // 그룹의 첫 번째 항목 href 찾기
     const getFirstChildHref = (item: SidebarNavItem): string | undefined => {
       if (item.children && item.children.length > 0) {
         return item.children[0].href || getFirstChildHref(item.children[0]);
@@ -116,58 +118,55 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
     const handleGroupClick = (item: SidebarNavItem) => {
       if (item.children && item.children.length > 0) {
         toggleGroup(item.label);
-        // 그룹 헤더 클릭 시 첫 번째 항목으로 스크롤
         const firstHref = getFirstChildHref(item);
-        if (firstHref && onNavigate) {
-          onNavigate(firstHref);
-        }
+        if (firstHref && onNavigate) onNavigate(firstHref);
       } else if (item.href) {
         handleNavigate(item.href);
       }
     };
 
+    if (!isOpen) return null;
+
+    const finalVariant = collapsible ? 'collapsible' : variant;
+
     return (
       <aside
         ref={ref}
-        className={cn(sidebarVariants({ variant }), className)}
+        className={cn(sidebarVariants({ variant: finalVariant, position }), className)}
         role="navigation"
         aria-label="Sidebar navigation"
+        style={{ width }}
         {...props}
       >
-        {header && (
+        {(header || (collapsible && onClose) || showThemeToggle) && (
           <div className="flex items-center justify-between gap-3 p-4 border-b border-neutral-200 dark:border-neutral-700">
-            <div className="flex-1">{header}</div>
+            {header && <div className="flex-1">{header}</div>}
             <div className="flex items-center gap-2">
               {showThemeToggle && <ThemeToggle />}
-              {variant === 'collapsible' && onClose && (
-                <button
-                  onClick={onClose}
-                  aria-label="Close sidebar"
+              {collapsible && onClose && (
+              <button
+                onClick={onClose}
+                aria-label="Close sidebar"
                   className="p-2 text-neutral-500 rounded-lg hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-700 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              )}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
             </div>
           </div>
         )}
         <nav className="flex-1 overflow-y-auto p-4 pt-6">
+          {children}
           {items.map((item) => {
             const hasChildren = item.children && item.children.length > 0;
             const isGroup = hasChildren;
             const isExpanded = isGroup && expandedGroups.has(item.label);
             const Icon = item.icon;
-            
-            // 그룹인 경우 활성 상태는 하위 항목 중 하나가 활성인지 확인
-            const isActive = isGroup
-              ? item.children?.some(child => child.href === activeHref) || false
-              : activeHref === item.href;
-
+            const isActive = isGroup ? item.children?.some(child => child.href === activeHref) || false : activeHref === item.href;
             return (
               <div key={item.label} className="mb-1">
-                {/* 그룹 헤더 또는 일반 항목 */}
                 <button
                   onClick={() => handleGroupClick(item)}
                   className={cn(
@@ -186,7 +185,7 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
                       className={cn(
                         "h-5 w-5 transition-colors flex-shrink-0",
                         isActive
-                          ? "text-primary-500 dark:text-primary-400"
+                          ? "text-primary-800 dark:text-primary-400"
                           : "text-neutral-400 group-hover:text-neutral-600 dark:text-neutral-500 dark:group-hover:text-neutral-300"
                       )}
                     />
@@ -215,7 +214,6 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
                   )}
                 </button>
 
-                {/* 하위 항목들 */}
                 {isGroup && isExpanded && (
                   <div className="ml-4 mt-1 space-y-0.5">
                     {item.children?.map((child) => {
@@ -241,7 +239,7 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
                               className={cn(
                                 "h-4 w-4 transition-colors flex-shrink-0",
                                 isChildActive
-                                  ? "text-primary-500 dark:text-primary-400"
+                                  ? "text-primary-800 dark:text-primary-400"
                                   : "text-neutral-400 group-hover:text-neutral-600 dark:text-neutral-500 dark:group-hover:text-neutral-300"
                               )}
                             />

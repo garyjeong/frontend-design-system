@@ -14,6 +14,8 @@ declare const listVariants: (props?: {
 } & import('class-variance-authority/types').ClassProp) => string;
 export interface ListProps extends React.HTMLAttributes<HTMLUListElement>, VariantProps<typeof listVariants> {
     items: ListItem[];
+    dense?: boolean;
+    maxHeight?: number | string;
     onItemClick?: (item: ListItem) => void;
 }
 export declare const List: React.ForwardRefExoticComponent<ListProps & React.RefAttributes<HTMLUListElement>>;

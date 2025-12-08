@@ -9,6 +9,11 @@ export declare const cardVariants: (props?: {
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof cardVariants> {
     interactive?: boolean;
     title?: string;
+    subtitle?: string;
+    image?: string;
+    imageAlt?: string;
+    actions?: React.ReactNode;
+    hoverable?: boolean;
     headerAction?: React.ReactNode;
 }
 interface CardComposition {

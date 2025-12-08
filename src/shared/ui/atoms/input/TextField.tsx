@@ -78,7 +78,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const helperId = helperText ? `${inputId}-helper` : undefined;
     const describedBy = [errorId, helperId, ariaDescribedBy].filter(Boolean).join(' ') || undefined;
 
-    const { inputProps, inputRef, disabled, readOnly, required } = useInput({
+    const { inputProps, inputRef } = useInput({
       inputRef: ref,
       disabled: disabledProp,
       readOnly: readOnlyProp,
@@ -98,15 +98,15 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5 block group-focus-within:text-primary-500 dark:group-focus-within:text-primary-400 transition-colors"
+            className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5 block group-focus-within:text-primary-800 dark:group-focus-within:text-primary-400 transition-colors"
           >
             {label}
-            {required && <span className="text-error-500 ml-1" aria-label="required">*</span>}
+            {requiredProp && <span className="text-error-500 ml-1" aria-label="required">*</span>}
           </label>
         )}
         <div className="relative">
           {Icon && iconPosition === 'left' && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500 pointer-events-none transition-colors group-focus-within:text-primary-500">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500 pointer-events-none transition-colors group-focus-within:text-primary-800">
               <Icon className="text-lg" />
             </div>
           )}
@@ -116,13 +116,13 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               textFieldVariants({ variant, size, error: !!error }),
               Icon && iconPosition === 'left' && "pl-10",
               Icon && iconPosition === 'right' && "pr-10",
-              disabled && "disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed dark:disabled:bg-neutral-900",
+              disabledProp && "disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed dark:disabled:bg-neutral-900",
               !error && "hover:border-neutral-300 dark:hover:border-neutral-600"
             )}
             {...inputProps}
           />
           {Icon && iconPosition === 'right' && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500 pointer-events-none transition-colors group-focus-within:text-primary-500">
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500 pointer-events-none transition-colors group-focus-within:text-primary-800">
               <Icon className="text-lg" />
             </div>
           )}

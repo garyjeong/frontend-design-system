@@ -1,8 +1,10 @@
 import React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
 import { cn } from '@/shared/lib/utils/cn';
 import { Pagination, type PaginationProps } from '@/shared/ui/organisms/pagination';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import {
+  FaAngleDoubleRight,
+} from 'react-icons/fa';
 
 const tablePaginationVariants = cva(
   "flex items-center justify-between px-4 py-3 border-t border-neutral-200 dark:border-neutral-700",

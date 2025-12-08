@@ -43,8 +43,6 @@ export const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
   ) => {
     const generatedId = useId();
     const fieldId = id || generatedId;
-    const errorId = error ? `${fieldId}-error` : undefined;
-    const helperId = helperText ? `${fieldId}-helper` : undefined;
 
     return (
       <div className={cn(formFieldVariants({ spacing }), className)}>

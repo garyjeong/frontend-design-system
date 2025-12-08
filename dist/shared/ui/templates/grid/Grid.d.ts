@@ -4,8 +4,8 @@ import { VariantProps } from 'class-variance-authority';
 declare const gridVariants: (props?: {
     cols?: 1 | 2 | 3 | "none" | 4 | 5 | 12 | 6;
     gap?: "none" | "sm" | "md" | "lg" | "xs" | "xl" | "2xl";
-    align?: "center" | "baseline" | "start" | "end" | "stretch";
-    justify?: "center" | "start" | "end" | "between" | "around";
+    align?: "center" | "stretch" | "end" | "start" | "baseline";
+    justify?: "center" | "end" | "start" | "between" | "around";
     padding?: "none" | "sm" | "md" | "lg" | "xs" | "xl" | "2xl";
     margin?: "none" | "sm" | "md" | "lg" | "xs" | "xl" | "2xl";
 } & import('class-variance-authority/types').ClassProp) => string;

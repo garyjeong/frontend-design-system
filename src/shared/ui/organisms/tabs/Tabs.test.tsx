@@ -25,9 +25,9 @@ describe('Tabs', () => {
     expect(screen.getByRole('tab', { name: 'Tab 2', selected: true })).toBeInTheDocument();
   });
 
-  it('calls onChange and switches content when a tab is clicked', () => {
+  it('calls onValueChange and switches content when a tab is clicked in uncontrolled mode', () => {
     const handleChange = vi.fn();
-    render(<Tabs items={mockTabs} onChange={handleChange} />);
+    render(<Tabs items={mockTabs} onValueChange={handleChange} />);
     
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Content 1');
     const tab2 = screen.getByRole('tab', { name: 'Tab 2' });
@@ -35,23 +35,24 @@ describe('Tabs', () => {
     fireEvent.click(tab2);
 
     expect(handleChange).toHaveBeenCalledWith('tab2');
+    // In uncontrolled mode, the component should update its own state
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Content 2');
     expect(screen.queryByText('Content 1')).not.toBeInTheDocument();
   });
 
   it('handles controlled value correctly', () => {
     const handleChange = vi.fn();
-    const { rerender } = render(<Tabs items={mockTabs} value="tab1" onChange={handleChange} />);
+    const { rerender } = render(<Tabs items={mockTabs} value="tab1" onValueChange={handleChange} />);
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Content 1');
 
-    // Clicking another tab should call onChange but not change content
+    // Clicking another tab should call onValueChange but not change content
     const tab2 = screen.getByRole('tab', { name: 'Tab 2' });
     fireEvent.click(tab2);
     expect(handleChange).toHaveBeenCalledWith('tab2');
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Content 1'); // Content remains unchanged
 
     // Re-rendering with a new value from parent should change the content
-    rerender(<Tabs items={mockTabs} value="tab3" onChange={handleChange} />);
+    rerender(<Tabs items={mockTabs} value="tab3" onValueChange={handleChange} />);
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Content 3');
   });
 
@@ -61,7 +62,7 @@ describe('Tabs', () => {
       ...mockTabs,
       { label: 'Disabled', value: 'disabled', disabled: true, content: 'Disabled' },
     ];
-    render(<Tabs items={tabsWithDisabled} onChange={handleChange} />);
+    render(<Tabs items={tabsWithDisabled} onValueChange={handleChange} />);
     
     const disabledTab = screen.getByRole('tab', { name: 'Disabled' });
     expect(disabledTab).toBeDisabled();
@@ -75,7 +76,7 @@ describe('Tabs', () => {
   it('renders pills variant with correct active class', () => {
     render(<Tabs items={mockTabs} variant="pills" defaultValue="tab1" />);
     const activeTab = screen.getByRole('tab', { selected: true });
-    expect(activeTab).toHaveClass('bg-primary text-white');
+    expect(activeTab).toHaveClass('bg-primary-500', 'text-white');
   });
 
   it('supports fullWidth prop', () => {

@@ -7,6 +7,8 @@ export declare const checkboxVariants: (props?: {
 export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'>, VariantProps<typeof checkboxVariants> {
     label?: string;
     indeterminate?: boolean;
+    error?: string;
+    helperText?: string;
 }
 export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & React.RefAttributes<HTMLInputElement>>;
 export default Checkbox;

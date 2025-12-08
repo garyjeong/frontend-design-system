@@ -1,5 +1,5 @@
-import React from 'react';
-import { cva } from 'class-variance-authority';
+import React, { useState, useEffect } from 'react';
+import { cva, VariantProps } from 'class-variance-authority';
 import { cn } from '@/shared/lib/utils/cn';
 
 export interface TabItem {
@@ -31,6 +31,10 @@ export const tabTriggerVariants = cva(
         true: "opacity-50 cursor-not-allowed hover:bg-transparent hover:text-neutral-600",
         false: "cursor-pointer",
       },
+      fullWidth: {
+        true: "flex-1",
+        false: "",
+      }
     },
     compoundVariants: [
       {
@@ -53,30 +57,49 @@ export const tabTriggerVariants = cva(
       variant: "default",
       active: false,
       disabled: false,
+      fullWidth: false,
     },
   }
 );
 
 export interface TabsProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   items: TabItem[];
-  value: string;
-  onValueChange: (value: string) => void;
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
   variant?: 'default' | 'underlined' | 'pills';
+  fullWidth?: boolean;
 }
 
 export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
   ({
     items,
-    value,
+    value: controlledValue,
+    defaultValue,
     onValueChange,
     variant = 'default',
+    fullWidth = false,
     className,
     ...props
   }, ref) => {
+    const [internalValue, setInternalValue] = useState(defaultValue || (items.length > 0 ? items[0].value : ''));
+    
+    const isControlled = controlledValue !== undefined;
+    const value = isControlled ? controlledValue : internalValue;
+
+    useEffect(() => {
+      if (isControlled) {
+        setInternalValue(controlledValue);
+      }
+    }, [controlledValue, isControlled]);
+
     const handleTabChange = (tabValue: string, disabled?: boolean) => {
       if (disabled) return;
-      onValueChange(tabValue);
+      if (!isControlled) {
+        setInternalValue(tabValue);
+      }
+      onValueChange?.(tabValue);
     };
 
     const activeTab = items.find((item) => item.value === value);
@@ -105,7 +128,7 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
                 tabIndex={item.disabled ? -1 : isActive ? 0 : -1}
                 disabled={item.disabled}
                 aria-disabled={item.disabled}
-                className={cn(tabTriggerVariants({ variant, active: isActive, disabled: item.disabled }))}
+                className={cn(tabTriggerVariants({ variant, active: isActive, disabled: item.disabled, fullWidth }))}
               >
                 {item.icon && <span className="text-lg">{item.icon}</span>}
                 <span>{item.label}</span>

@@ -1,6 +1,6 @@
 
 import { renderHook, act } from '@testing-library/react';
-import { useFocusVisible } from '../src/hooks/useFocusVisible';
+import { useFocusVisible } from '../../../src/hooks/useFocusVisible';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import React from 'react';
 

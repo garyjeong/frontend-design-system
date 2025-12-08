@@ -91,6 +91,7 @@ export const Dropdown = React.forwardRef<HTMLSelectElement, DropdownProps>(
               disabled && "disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed dark:disabled:bg-neutral-900",
               !error && "hover:border-neutral-300 dark:hover:border-neutral-600"
             )}
+            disabled={disabled}
             aria-label={ariaLabel || label}
             aria-invalid={error ? 'true' : undefined}
             aria-describedby={describedBy}

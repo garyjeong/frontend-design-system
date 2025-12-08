@@ -130,9 +130,9 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
             aria-describedby={describedBy}
             {...props}
           />
-          <FaUpload className="text-primary-500 text-3xl mb-3" />
+          <FaUpload className="text-primary-800 text-3xl mb-3" />
           <p className="text-sm text-neutral-600 dark:text-neutral-300 text-center">
-            <span className="font-semibold text-primary-500 dark:text-primary-400">Click to upload</span> or drag and drop
+            <span className="font-semibold text-primary-800 dark:text-primary-400">Click to upload</span> or drag and drop
           </p>
           {helperText && !error && (
             <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 text-center">{helperText}</p>

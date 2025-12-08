@@ -1,6 +1,6 @@
 
 import { renderHook, act } from '@testing-library/react';
-import { useFocusRestore } from '../src/hooks/useFocusRestore';
+import { useFocusRestore } from '../../../src/hooks/useFocusRestore';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import React from 'react';
 

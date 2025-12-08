@@ -42,6 +42,13 @@
     --theme-text-primary: #0f172a;
     --theme-text-secondary: #64748b;
     --theme-border: #dfe6e9;
+    /* Global shadow color used by Tailwind shadow utilities (tune for UI hover feedback) */
+    --tw-shadow-color: rgba(16,24,40,0.03);
+  }
+
+/* Slightly different shadow in dark mode for subtle separation */
+.dark {
+  --tw-shadow-color: rgba(255,255,255,0.02);
   }
 
   body {

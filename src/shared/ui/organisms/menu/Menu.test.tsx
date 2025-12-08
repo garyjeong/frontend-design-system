@@ -4,9 +4,9 @@ import { Menu } from './Menu';
 import { vi } from 'vitest';
 
 const mockItems = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
+  { id: 'home', label: 'Home', href: '/' },
+  { id: 'about', label: 'About', href: '/about' },
+  { id: 'contact', label: 'Contact', href: '/contact' },
 ];
 
 describe('Menu', () => {
@@ -41,7 +41,7 @@ describe('Menu', () => {
     );
     const aboutLink = screen.getByText(/about/i).closest('a');
     expect(aboutLink).toHaveAttribute('aria-current', 'page');
-    expect(aboutLink).toHaveClass('bg-slate-100');
+    expect(aboutLink).toHaveClass('bg-primary-50');
   });
 
   it('calls onItemClick when item is clicked', () => {
@@ -52,14 +52,14 @@ describe('Menu', () => {
     const homeLink = screen.getByText(/home/i).closest('a');
     if (homeLink) {
       fireEvent.click(homeLink);
-      expect(handleClick).toHaveBeenCalledWith('/');
+      expect(handleClick).toHaveBeenCalledWith(mockItems[0]);
     }
   });
 
   it('handles disabled items', () => {
     const itemsWithDisabled = [
-      { label: 'Home', href: '/' },
-      { label: 'Disabled', href: '/disabled', disabled: true },
+      { id: 'home', label: 'Home', href: '/' },
+      { id: 'disabled', label: 'Disabled', href: '/disabled', disabled: true },
     ];
     render(
       <Menu items={itemsWithDisabled} />
@@ -71,7 +71,7 @@ describe('Menu', () => {
 
   it('renders menu with icons', () => {
     const itemsWithIcons = [
-      { label: 'Home', href: '/', icon: <span>🏠</span> },
+      { id: 'home', label: 'Home', href: '/', icon: <span>🏠</span> },
     ];
     render(
       <Menu items={itemsWithIcons} />

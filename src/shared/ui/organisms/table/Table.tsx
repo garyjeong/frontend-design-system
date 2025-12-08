@@ -36,6 +36,7 @@ export interface TableProps
   columns: TableColumn[];
   data: Record<string, React.ReactNode>[];
   onRowClick?: (row: Record<string, React.ReactNode>) => void;
+  emptyMessage?: string;
 }
 
 export const Table = React.forwardRef<HTMLTableElement, TableProps>(
@@ -45,6 +46,7 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
     variant,
     size,
     onRowClick,
+    emptyMessage = "No data available",
     className,
     ...props
   }, ref) => {
@@ -82,13 +84,14 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
           </tr>
         </thead>
         <tbody className="divide-y divide-neutral-200 dark:divide-neutral-700">
-          {data.map((row, rowIndex) => (
+          {data.length > 0 ? (
+            data.map((row, rowIndex) => (
             <tr
               key={rowIndex}
               onClick={() => handleRowClick(row)}
               className={cn(
-                "transition-colors",
-                onRowClick && "cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-700/50"
+                  "transition-colors transform",
+                  onRowClick && "cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-700/50 hover:shadow-md"
               )}
             >
               {columns.map((column) => {
@@ -110,7 +113,17 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
                 );
               })}
             </tr>
-          ))}
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan={columns.length}
+                className="p-8 text-center text-neutral-500"
+              >
+                {emptyMessage}
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     );

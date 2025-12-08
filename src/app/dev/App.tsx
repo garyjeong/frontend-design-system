@@ -1,16 +1,33 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/shared/ui/atoms/button';
-import { TextField, Switch, Slider, TextArea } from '@/shared/ui/atoms';
+import { Badge } from '@/shared/ui/atoms/badge';
+import { Avatar } from '@/shared/ui/atoms/avatar';
+import { TextField } from '@/shared/ui/atoms/input';
+import { Switch } from '@/shared/ui/atoms/switch';
+import { Slider } from '@/shared/ui/atoms/slider';
+import { TextArea } from '@/shared/ui/atoms/textarea';
 import { FileUpload } from '@/shared/ui/molecules/file-upload';
 import { Card } from '@/shared/ui/molecules/card';
 import { Typography } from '@/shared/ui/atoms/typography';
-import { Alert, Progress, Skeleton } from '@/shared/ui/organisms';
+import { Alert } from '@/shared/ui/organisms/alert';
+import { Progress } from '@/shared/ui/organisms/progress';
+import { Skeleton } from '@/shared/ui/organisms/skeleton';
 import { Tooltip } from '@/shared/ui/atoms/tooltip';
 import { Popover } from '@/shared/ui/organisms/popover';
-import { Grid, Stack, Divider, Spacer } from '@/shared/ui/templates';
-import { Breadcrumb, Stepper, Drawer, Modal, Accordion, Tabs, Menu, Pagination, List, Table } from '@/shared/ui/organisms';
-import { Badge } from '@/shared/ui/atoms/badge';
-import { Avatar } from '@/shared/ui/atoms/avatar';
+import { Modal } from '@/shared/ui/organisms/modal';
+import { Accordion } from '@/shared/ui/organisms/accordion';
+import { Table } from '@/shared/ui/organisms/table';
+import { List } from '@/shared/ui/organisms/list';
+import { Pagination } from '@/shared/ui/organisms/pagination';
+import { Menu, type MenuItem } from '@/shared/ui/organisms/menu';
+import { Grid } from '@/shared/ui/templates/grid';
+import { Stack } from '@/shared/ui/templates/stack';
+import { Divider } from '@/shared/ui/templates/divider';
+import { Spacer } from '@/shared/ui/templates/spacer';
+import { Breadcrumb } from '@/shared/ui/organisms/breadcrumb';
+import { Stepper } from '@/shared/ui/organisms/stepper';
+import { Drawer } from '@/shared/ui/organisms/drawer';
+import { Tabs } from '@/shared/ui/organisms/tabs';
 import { ToastProvider, useToast } from '@/shared/ui/organisms/toast';
 import { Sidebar, type SidebarNavItem } from '@/shared/ui/templates/sidebar';
 import { ThemeProvider } from '@/shared/contexts/ThemeContext';
@@ -80,7 +97,7 @@ const DashboardView = () => {
   const { showToast } = useToast();
   
   return (
-    <div className="space-y-10 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       {/* Header Section */}
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
@@ -1238,7 +1255,7 @@ const UnifiedPageView = () => {
               { id: '3', label: '메뉴 항목 3', icon: FaCog },
             ]}
             activeItem={activeMenuItem}
-            onItemClick={(item) => setActiveMenuItem(item.id)}
+            onItemClick={(item: MenuItem) => setActiveMenuItem(item.id)}
           />
         </div>
       </div>
@@ -1627,15 +1644,15 @@ function AppContent() {
         onNavigate={handleSidebarNavigate}
         className="z-50 border-r border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900"
         header={
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-white shadow-sm">
-              <FaShapes className="text-sm" />
-            </div>
-            <div>
-              <Typography variant="h6" className="font-bold leading-none tracking-tight text-neutral-900 dark:text-white">
-                GaryUI
-              </Typography>
-            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-white shadow-sm">
+                <FaShapes className="text-sm" />
+              </div>
+              <div>
+                <Typography variant="h6" className="font-bold leading-none tracking-tight text-neutral-900 dark:text-white">
+                  GaryUI
+                </Typography>
+              </div>
           </div>
         }
         showThemeToggle={true}

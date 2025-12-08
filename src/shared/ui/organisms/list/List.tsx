@@ -28,7 +28,7 @@ const listVariants = cva(
 );
 
 const listItemVariants = cva(
-  "flex items-center gap-4 transition-colors",
+  "flex items-center gap-4 transition-colors transform",
   {
     variants: {
       dense: {
@@ -36,7 +36,7 @@ const listItemVariants = cva(
         false: "py-3 px-5",
       },
       clickable: {
-        true: "cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700/50",
+        true: "cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700/50 hover:shadow-md",
         false: "cursor-default",
       },
       disabled: {
@@ -56,6 +56,8 @@ export interface ListProps
   extends React.HTMLAttributes<HTMLUListElement>,
     VariantProps<typeof listVariants> {
   items: ListItem[];
+  dense?: boolean;
+  maxHeight?: number | string;
   onItemClick?: (item: ListItem) => void;
 }
 
@@ -63,6 +65,8 @@ export const List = React.forwardRef<HTMLUListElement, ListProps>(
   ({
     items,
     variant,
+    dense = false,
+    maxHeight,
     onItemClick,
     className,
     ...props
@@ -78,6 +82,7 @@ export const List = React.forwardRef<HTMLUListElement, ListProps>(
         ref={ref}
         className={cn(listVariants({ variant }), className)}
         role="list"
+        style={maxHeight ? { maxHeight, overflowY: 'auto' } : undefined}
         {...props}
       >
         {items.map((item) => {
@@ -85,7 +90,7 @@ export const List = React.forwardRef<HTMLUListElement, ListProps>(
           return (
             <li
               key={item.id}
-              className={cn(listItemVariants({ dense: false, clickable: isClickable, disabled: item.disabled }))}
+              className={cn(listItemVariants({ dense, clickable: isClickable, disabled: item.disabled }))}
               onClick={() => handleItemClick(item)}
               role="listitem"
               aria-disabled={item.disabled}

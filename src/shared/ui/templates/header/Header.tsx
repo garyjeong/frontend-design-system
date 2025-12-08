@@ -7,13 +7,18 @@ const headerVariants = cva(
   {
     variants: {
       variant: {
-        default: "",
-        sticky: "sticky top-0 z-50",
+        default: "shadow-sm",
+        transparent: "bg-transparent border-none",
         fixed: "fixed top-0 left-0 right-0 z-50",
+      },
+      sticky: {
+        true: "sticky top-0 z-50",
+        false: "",
       },
     },
     defaultVariants: {
       variant: "default",
+      sticky: false,
     },
   }
 );
@@ -24,21 +29,15 @@ export interface HeaderProps
   logo?: React.ReactNode;
   nav?: React.ReactNode;
   actions?: React.ReactNode;
+  sticky?: boolean;
 }
 
 export const Header = React.forwardRef<HTMLElement, HeaderProps>(
-  ({
-    className,
-    variant,
-    logo,
-    nav,
-    actions,
-    ...props
-  }, ref) => {
+  ({ className, variant, sticky, logo, nav, actions, ...props }, ref) => {
     return (
       <header
         ref={ref}
-        className={cn(headerVariants({ variant }), className)}
+        className={cn(headerVariants({ variant, sticky }), className)}
         role="banner"
         {...props}
       >

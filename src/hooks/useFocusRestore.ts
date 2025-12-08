@@ -13,23 +13,25 @@ interface UseFocusRestoreProps {
   restoreElementRef?: React.RefObject<HTMLElement>;
 }
 
-export const useFocusRestore = (props: UseFocusRestoreProps) => {
-  const { enabled = true, restoreElementRef } = props;
-
-  const lastFocusedElementRef = React.useRef<HTMLElement | null>(null);
+export const useFocusRestore = ({ enabled = true, restoreElementRef: externalRestoreElementRef }: UseFocusRestoreProps = {}) => {
+  const internalRestoreElementRef = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
-    if (!enabled) {
-      return undefined;
-    }
-
-    lastFocusedElementRef.current = document.activeElement as HTMLElement;
+    internalRestoreElementRef.current = document.activeElement as HTMLElement;
+    const elementToRestore = internalRestoreElementRef.current;
 
     return () => {
-      const restoreElement = restoreElementRef?.current || lastFocusedElementRef.current;
-      if (restoreElement && typeof restoreElement.focus === 'function') {
-        restoreElement.focus();
+      if (enabled) {
+        const targetElement = externalRestoreElementRef?.current || elementToRestore;
+        if (
+          targetElement &&
+          document.body.contains(targetElement)
+        ) {
+          targetElement.focus({ preventScroll: true });
+        }
       }
     };
-  }, [enabled, restoreElementRef]);
+  }, [enabled, externalRestoreElementRef]);
+
+  return internalRestoreElementRef;
 };

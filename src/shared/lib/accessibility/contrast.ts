@@ -54,7 +54,12 @@ function findEffectiveBackground(el: Element | null): string {
     if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') return bg;
     node = node.parentElement;
   }
-  return window.getComputedStyle(document.documentElement).backgroundColor || 'rgb(255,255,255)';
+  // fallback to body then html
+  const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+  if (bodyBg && bodyBg !== 'rgba(0, 0, 0, 0)' && bodyBg !== 'transparent') return bodyBg;
+  const htmlBg = window.getComputedStyle(document.documentElement).backgroundColor;
+  if (htmlBg && htmlBg !== 'rgba(0, 0, 0, 0)' && htmlBg !== 'transparent') return htmlBg;
+  return 'rgb(255,255,255)';
 }
 
 export function runContrastChecks(root: Element = document.body) {

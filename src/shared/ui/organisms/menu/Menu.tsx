@@ -15,7 +15,7 @@ export const menuVariants = cva(
         default: "",
         pills: "p-1 bg-neutral-100 dark:bg-neutral-800",
         tabs: "border-b border-neutral-200 dark:border-neutral-700 gap-6",
-      }
+      },
     },
     defaultVariants: {
       orientation: "horizontal",
@@ -30,7 +30,7 @@ export const menuItemVariants = cva(
     variants: {
       active: {
         true: "text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20",
-        false: "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white",
+        false: "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white hover:shadow-md",
       },
       disabled: {
         true: "opacity-50 cursor-not-allowed pointer-events-none",
@@ -38,26 +38,14 @@ export const menuItemVariants = cva(
       },
       variant: {
         default: "",
-        pills: "", // Handled by container
+        pills: "",
         tabs: "rounded-none border-b-2 border-transparent px-1 py-3 hover:bg-transparent hover:text-primary-600 dark:hover:text-primary-400",
-      }
+      },
     },
     compoundVariants: [
-      {
-        variant: "pills",
-        active: true,
-        className: "bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white shadow-sm",
-      },
-      {
-        variant: "pills",
-        active: false,
-        className: "hover:bg-white/50 dark:hover:bg-neutral-700/50",
-      },
-      {
-        variant: "tabs",
-        active: true,
-        className: "bg-transparent border-primary-500 text-primary-600 dark:text-primary-400 dark:border-primary-400",
-      }
+      { variant: "pills", active: true, className: "bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white shadow-sm" },
+      { variant: "pills", active: false, className: "hover:bg-white/50 dark:hover:bg-neutral-700/50" },
+      { variant: "tabs", active: true, className: "bg-transparent border-primary-500 text-primary-600 dark:text-primary-400 dark:border-primary-400" },
     ],
     defaultVariants: {
       active: false,
@@ -84,20 +72,12 @@ export interface MenuProps extends VariantProps<typeof menuVariants> {
   onItemClick?: (item: MenuItem) => void;
 }
 
-export const Menu = ({
-  items,
-  activeItem,
-  orientation,
-  variant,
-  className,
-  onItemClick,
-}: MenuProps) => {
+export const Menu = ({ items, activeItem, orientation, variant, className, onItemClick }: MenuProps) => {
   return (
-    <nav className={cn(menuVariants({ orientation, variant, className }))}>
-      {items.map((item) => {
+    <nav className={cn(menuVariants({ orientation, variant }), className)}>
+      {items.map((item, idx) => {
+        const key = item.id || `${item.label}-${idx}`;
         const isActive = activeItem === item.id || activeItem === item.href;
-        
-        // Determine if icon is a component or element
         const IconRender = item.icon && typeof item.icon === 'function' 
           ? React.createElement(item.icon as IconType, { className: cn("text-lg", isActive ? "text-current" : "text-neutral-400 dark:text-neutral-500 group-hover:text-current") }) 
           : item.icon;
@@ -130,11 +110,12 @@ export const Menu = ({
         if (item.href) {
           return (
             <a
-              key={item.id}
+              key={key}
               href={item.href}
               onClick={handleClick}
               className={cn(menuItemVariants({ active: isActive, disabled: item.disabled, variant }), "group")}
               aria-current={isActive ? 'page' : undefined}
+              aria-disabled={item.disabled ? 'true' : undefined}
             >
               {content}
             </a>
@@ -143,11 +124,12 @@ export const Menu = ({
 
         return (
           <button
-            key={item.id}
+            key={key}
             onClick={handleClick}
             disabled={item.disabled}
             className={cn(menuItemVariants({ active: isActive, disabled: item.disabled, variant }), "w-full text-left group")}
             type="button"
+            aria-disabled={item.disabled ? 'true' : undefined}
           >
             {content}
           </button>

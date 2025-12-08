@@ -12,12 +12,15 @@ export declare const tabTriggerVariants: (props?: {
     variant?: "default" | "pills" | "underlined";
     active?: boolean;
     disabled?: boolean;
+    fullWidth?: boolean;
 } & import('class-variance-authority/types').ClassProp) => string;
-export interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
     items: TabItem[];
-    value: string;
-    onValueChange: (value: string) => void;
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (value: string) => void;
     variant?: 'default' | 'underlined' | 'pills';
+    fullWidth?: boolean;
 }
 export declare const Tabs: React.ForwardRefExoticComponent<TabsProps & React.RefAttributes<HTMLDivElement>>;
 export default Tabs;

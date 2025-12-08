@@ -1,5 +1,5 @@
-// Theme presets: purple, orange, green
-export type ThemeColorKey = 'purple' | 'orange' | 'green' | 'custom';
+// Theme presets: purple, orange, green, blue
+export type ThemeColorKey = 'purple' | 'orange' | 'green' | 'blue' | 'custom';
 
 export type ColorScale = {
   50?: string;
@@ -13,6 +13,7 @@ export type ColorScale = {
   800?: string;
   900?: string;
   950?: string;
+  [key: string]: string | undefined;
 };
 
 export interface ThemePreset {
@@ -70,6 +71,23 @@ export const themePresets: Record<ThemeColorKey, ThemePreset> = {
       800: '#166534',
       900: '#14532d',
       950: '#052e16',
+    },
+    foreground: '#ffffff',
+  },
+  blue: {
+    name: 'blue',
+    primary: {
+      50: '#eff6ff',
+      100: '#dbeafe',
+      200: '#bfdbfe',
+      300: '#93c5fd',
+      400: '#60a5fa',
+      500: '#3b82f6',
+      600: '#2563eb',
+      700: '#1d4ed8',
+      800: '#1e40af',
+      900: '#1e3a8a',
+      950: '#172554',
     },
     foreground: '#ffffff',
   },

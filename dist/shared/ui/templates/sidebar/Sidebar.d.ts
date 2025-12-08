@@ -12,14 +12,19 @@ export type SidebarNavItem = {
 };
 declare const sidebarVariants: (props?: {
     variant?: "default" | "collapsible";
+    position?: "left" | "right";
 } & import('class-variance-authority/types').ClassProp) => string;
-export interface SidebarProps extends React.HTMLAttributes<HTMLElement>, VariantProps<typeof sidebarVariants> {
-    isOpen: boolean;
+export interface SidebarProps extends Omit<React.HTMLAttributes<HTMLElement>, 'position'>, VariantProps<typeof sidebarVariants> {
+    isOpen?: boolean;
     onClose?: () => void;
-    items: SidebarNavItem[];
+    items?: SidebarNavItem[];
     onNavigate?: (href: string) => void;
     header?: React.ReactNode;
     collapsible?: boolean;
+    showThemeToggle?: boolean;
+    width?: string;
+    position?: 'left' | 'right';
+    children?: React.ReactNode;
 }
 export declare const Sidebar: React.ForwardRefExoticComponent<SidebarProps & React.RefAttributes<HTMLElement>>;
 export default Sidebar;

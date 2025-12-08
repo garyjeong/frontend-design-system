@@ -1,5 +1,5 @@
 
-import { generateId, getAriaProps } from '../src/utils/a11y';
+import { generateId, getAriaProps } from '../../../src/utils/a11y';
 import { describe, it, expect } from 'vitest';
 
 describe('a11y utilities', () => {

@@ -5,16 +5,16 @@ import { cn } from '@/shared/lib/utils/cn';
 import { useButton } from '@/shared/lib/hooks/useButton';
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-background-dark disabled:cursor-not-allowed disabled:opacity-50 select-none active:scale-[0.98]",
+  "inline-flex items-center justify-center gap-2 font-medium transform transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-background-dark disabled:cursor-not-allowed disabled:opacity-50 select-none active:scale-[0.98]",
   {
     variants: {
       variant: {
-        primary: "bg-primary-800 text-white hover:bg-primary-700 dark:bg-primary-800 dark:hover:bg-primary-700 shadow-soft-sm border border-transparent",
-        secondary: "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 border border-transparent",
-        outline: "bg-transparent text-primary-500 border border-primary-500 hover:bg-primary-50 dark:text-primary-400 dark:border-primary-400 dark:hover:bg-primary-900/20",
-        ghost: "bg-transparent text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800 border border-transparent",
-        link: "bg-transparent text-primary-500 hover:underline underline-offset-4 p-0 h-auto border-none dark:text-primary-400",
-        danger: "bg-error-500 text-white hover:bg-error-600 dark:bg-error-500 dark:hover:bg-error-400 shadow-soft-sm border border-transparent",
+        primary: "bg-primary-800 text-white hover:shadow-md dark:bg-primary-800 shadow-soft-sm border border-transparent",
+        secondary: "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 border border-transparent hover:shadow-sm hover:-translate-y-0.5",
+        outline: "bg-transparent text-primary-800 border border-primary-500 hover:bg-primary-50 dark:text-primary-400 dark:border-primary-400 dark:hover:bg-primary-900/20 hover:shadow-sm hover:-translate-y-0.5 hover:ring-1 hover:ring-primary-500/20",
+        ghost: "bg-transparent text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800 border border-transparent hover:shadow-sm hover:-translate-y-0.5",
+        link: "bg-transparent text-primary-800 hover:underline underline-offset-4 p-0 h-auto border-none dark:text-primary-400 hover:ring-1 hover:ring-primary-500/10",
+        danger: "bg-error-500 text-white hover:bg-error-600 dark:bg-error-500 dark:hover:bg-error-400 shadow-soft-sm border border-transparent hover:shadow-sm hover:-translate-y-0.5",
       },
       size: {
         small: "text-xs h-8 px-3",
@@ -52,7 +52,7 @@ export interface ButtonProps
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, fullWidth, rounded, icon: Icon, iconPosition = 'left', children, disabled: disabledProp, loading: loadingProp, onClick, ...props }, ref) => {
-    const { buttonProps, buttonRef, disabled, loading } = useButton({
+    const { buttonProps, buttonRef, loading } = useButton({
       buttonRef: ref,
       disabled: disabledProp,
       loading: loadingProp,

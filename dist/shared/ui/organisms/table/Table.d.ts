@@ -14,6 +14,7 @@ export interface TableProps extends React.TableHTMLAttributes<HTMLTableElement>,
     columns: TableColumn[];
     data: Record<string, React.ReactNode>[];
     onRowClick?: (row: Record<string, React.ReactNode>) => void;
+    emptyMessage?: string;
 }
 export declare const Table: React.ForwardRefExoticComponent<TableProps & React.RefAttributes<HTMLTableElement>>;
 export default Table;

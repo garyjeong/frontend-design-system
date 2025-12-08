@@ -1,14 +1,27 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Button } from '@/components/buttons';
-import { TextField, Switch, Slider, TextArea, FileUpload } from '@/components/forms';
-import { Card } from '@/components/data-display';
-import { Typography } from '@/components/typography';
-import { Alert, Progress, Skeleton } from '@/components/feedback';
-import { Tooltip, Popover } from '@/components/overlay';
-import { Grid, Stack, Divider, Spacer } from '@/components/layout';
-import { Breadcrumb, Stepper, Drawer, Tabs } from '@/components/navigation';
-import { ToastProvider, useToast } from '@/components/notifications';
-import { Sidebar, type SidebarNavItem } from '@/components/templates';
+import { Button } from '@/shared/ui/atoms/button';
+import { TextField } from '@/shared/ui/atoms/input';
+import { Switch } from '@/shared/ui/atoms/switch';
+import { Slider } from '@/shared/ui/atoms/slider';
+import { TextArea } from '@/shared/ui/atoms/textarea';
+import { FileUpload } from '@/shared/ui/molecules/file-upload';
+import { Card } from '@/shared/ui/molecules/card';
+import { Typography } from '@/shared/ui/atoms/typography';
+import { Alert } from '@/shared/ui/organisms/alert';
+import { Progress } from '@/shared/ui/organisms/progress';
+import { Skeleton } from '@/shared/ui/organisms/skeleton';
+import { Tooltip } from '@/shared/ui/atoms/tooltip';
+import { Popover } from '@/shared/ui/organisms/popover';
+import { Grid } from '@/shared/ui/templates/grid';
+import { Stack } from '@/shared/ui/templates/stack';
+import { Divider } from '@/shared/ui/templates/divider';
+import { Spacer } from '@/shared/ui/templates/spacer';
+import { Breadcrumb } from '@/shared/ui/organisms/breadcrumb';
+import { Stepper } from '@/shared/ui/organisms/stepper';
+import { Drawer } from '@/shared/ui/organisms/drawer';
+import { Tabs } from '@/shared/ui/organisms/tabs';
+import { ToastProvider, useToast } from '@/shared/ui/organisms/toast';
+import { Sidebar, type SidebarNavItem } from '@/shared/ui/templates/sidebar';
 import {
   FaUser,
   FaEnvelope,

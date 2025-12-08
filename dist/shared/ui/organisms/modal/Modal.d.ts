@@ -9,6 +9,7 @@ export interface ModalProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
     onClose: () => void;
     closeOnOverlayClick?: boolean;
     closeOnEscape?: boolean;
+    showCloseButton?: boolean;
 }
 interface ModalComposition {
     Header: typeof ModalHeader;

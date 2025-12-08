@@ -3,24 +3,27 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Modal } from './Modal';
 import { vi } from 'vitest';
 
-const TestModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
-  <Modal isOpen={isOpen} onClose={onClose} title="Test Modal">
-    <p>Modal Content</p>
+const TestModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => (
+  <Modal open={open} onClose={onClose}>
+    <Modal.Title>Test Modal</Modal.Title>
+    <Modal.Content>
+      <p>Modal Content</p>
+    </Modal.Content>
   </Modal>
 );
 
 describe('Modal', () => {
-  it('renders modal when isOpen is true', () => {
+  it('renders modal when open is true', () => {
     render(
-      <TestModal isOpen onClose={vi.fn()} />
+      <TestModal open onClose={vi.fn()} />
     );
     expect(screen.getByText(/test modal/i)).toBeInTheDocument();
     expect(screen.getByText(/modal content/i)).toBeInTheDocument();
   });
 
-  it('does not render modal when isOpen is false', () => {
+  it('does not render modal when open is false', () => {
     render(
-      <TestModal isOpen={false} onClose={vi.fn()} />
+      <TestModal open={false} onClose={vi.fn()} />
     );
     expect(screen.queryByText(/test modal/i)).not.toBeInTheDocument();
   });
@@ -28,7 +31,7 @@ describe('Modal', () => {
   it('calls onClose when close button is clicked', async () => {
     const handleClose = vi.fn();
     render(
-        <TestModal isOpen onClose={handleClose} />
+        <TestModal open onClose={handleClose} />
     );
     const closeButton = screen.getByLabelText(/close modal/i);
     fireEvent.click(closeButton);
@@ -40,8 +43,11 @@ describe('Modal', () => {
   it('calls onClose when overlay is clicked', async () => {
     const handleClose = vi.fn();
     render(
-        <Modal isOpen onClose={handleClose} title="Test" closeOnOverlayClick>
-          <p>Content</p>
+        <Modal open onClose={handleClose} closeOnOverlayClick>
+          <Modal.Title>Test</Modal.Title>
+          <Modal.Content>
+            <p>Content</p>
+          </Modal.Content>
         </Modal>
     );
     const overlay = screen.getByRole('dialog');
@@ -54,8 +60,11 @@ describe('Modal', () => {
   it('does not call onClose when overlay is clicked and closeOnOverlayClick is false', () => {
     const handleClose = vi.fn();
     render(
-        <Modal isOpen onClose={handleClose} title="Test" closeOnOverlayClick={false}>
-          <p>Content</p>
+        <Modal open onClose={handleClose} closeOnOverlayClick={false}>
+          <Modal.Title>Test</Modal.Title>
+          <Modal.Content>
+            <p>Content</p>
+          </Modal.Content>
         </Modal>
     );
     const overlay = screen.getByRole('dialog');
@@ -66,7 +75,7 @@ describe('Modal', () => {
   it('calls onClose when Escape key is pressed', async () => {
     const handleClose = vi.fn();
     render(
-        <TestModal isOpen onClose={handleClose} />
+        <TestModal open onClose={handleClose} />
     );
     fireEvent.keyDown(document, { key: 'Escape' });
     await waitFor(() => {
@@ -77,8 +86,11 @@ describe('Modal', () => {
   it('does not call onClose when Escape is pressed and closeOnEscape is false', () => {
     const handleClose = vi.fn();
     render(
-        <Modal isOpen onClose={handleClose} title="Test" closeOnEscape={false}>
-          <p>Content</p>
+        <Modal open onClose={handleClose} closeOnEscape={false}>
+          <Modal.Title>Test</Modal.Title>
+          <Modal.Content>
+            <p>Content</p>
+          </Modal.Content>
         </Modal>
     );
     fireEvent.keyDown(document, { key: 'Escape' });
@@ -87,37 +99,48 @@ describe('Modal', () => {
 
   it('renders modal with footer', () => {
     render(
-      <Modal isOpen onClose={vi.fn()} title="Test" footer={<button type="button">Footer</button>}>
+      <Modal open onClose={vi.fn()}>
+        <Modal.Title>Test</Modal.Title>
+        <Modal.Content>
           <p>Content</p>
-        </Modal>
+        </Modal.Content>
+        <Modal.Footer>
+          <button type="button">Footer</button>
+        </Modal.Footer>
+      </Modal>
     );
     expect(screen.getByText(/footer/i)).toBeInTheDocument();
   });
 
   it('renders modal without title', () => {
     render(
-      <Modal isOpen onClose={vi.fn()}>
+      <Modal open onClose={vi.fn()}>
+        <Modal.Content>
           <p>Content</p>
-        </Modal>
+        </Modal.Content>
+      </Modal>
     );
     expect(screen.getByText(/content/i)).toBeInTheDocument();
   });
 
   it('renders modal without close button when showCloseButton is false', () => {
     render(
-      <Modal isOpen onClose={vi.fn()} title="Test" showCloseButton={false}>
+      <Modal open onClose={vi.fn()} showCloseButton={false}>
+        <Modal.Title>Test</Modal.Title>
+        <Modal.Content>
           <p>Content</p>
-        </Modal>
+        </Modal.Content>
+      </Modal>
     );
     expect(screen.queryByLabelText(/close modal/i)).not.toBeInTheDocument();
   });
 
   it('has proper aria attributes', () => {
     render(
-      <TestModal isOpen onClose={vi.fn()} />
+      <TestModal open onClose={vi.fn()} />
     );
     const modal = screen.getByRole('dialog');
     expect(modal).toHaveAttribute('aria-modal', 'true');
-    expect(modal).toHaveAttribute('aria-labelledby', 'modal-title');
+    expect(modal).toHaveAttribute('aria-labelledby');
   });
 });

@@ -1,6 +1,6 @@
-
+import React from 'react';
 import { renderHook, act } from '@testing-library/react';
-import { useButton } from '../src/hooks/useButton';
+import { useButton } from '../../../src/hooks/useButton';
 import { describe, it, expect, vi } from 'vitest';
 
 describe('useButton', () => {

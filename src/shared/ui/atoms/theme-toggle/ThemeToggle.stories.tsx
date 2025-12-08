@@ -34,7 +34,7 @@ const DemoContent = () => {
           {(['purple','orange','green','custom'] as const).map((k) => (
             <button
               key={k}
-              onClick={() => setThemeColor(k as any)}
+              onClick={() => setThemeColor(k)}
               className={`h-8 w-8 rounded-md border-2 ${color === k ? 'ring-2 ring-primary-500' : 'border-transparent'}`}
               style={{ backgroundColor: themePresets[k].primary?.['500'] }}
               aria-label={`Select ${k}`}
