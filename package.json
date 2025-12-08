@@ -15,17 +15,18 @@
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "tailwind-merge": "^2.3.0"
   },
+  "main": "dist/frontend-design-system.umd.js",
+  "module": "dist/frontend-design-system.es.js",
+  "types": "dist/shared/index.d.ts",
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",

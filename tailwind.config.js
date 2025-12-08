@@ -16,21 +16,21 @@ export default {
         'grid': '24px 24px',
       },
       colors: {
-        // Primary Brand Colors (Flat UI Colors US - Sky Blue)
+        // Primary mapped to CSS variables for runtime theming
         primary: {
-          50: '#e3f2fd',
-          100: '#bbdefb',
-          200: '#90caf9',
-          300: '#64b5f6',
-          400: '#42a5f5',
-          500: '#74b9ff', // Base Primary (US Palette)
-          600: '#5a9de6',
-          700: '#4a8dd4',
-          800: '#3a7dc2',
-          900: '#2a6db0',
-          950: '#1a5d9e',
-          DEFAULT: '#74b9ff',
-          foreground: '#ffffff',
+          50: 'var(--theme-primary-50)',
+          100: 'var(--theme-primary-100)',
+          200: 'var(--theme-primary-200)',
+          300: 'var(--theme-primary-300)',
+          400: 'var(--theme-primary-400)',
+          500: 'var(--theme-primary-500)',
+          600: 'var(--theme-primary-600)',
+          700: 'var(--theme-primary-700)',
+          800: 'var(--theme-primary-800)',
+          900: 'var(--theme-primary-900)',
+          950: 'var(--theme-primary-900)',
+          DEFAULT: 'var(--theme-primary-500)',
+          foreground: 'var(--theme-foreground, #ffffff)',
         },
         // Semantic Colors
         success: {
@@ -117,34 +117,34 @@ export default {
           900: '#2d3134',
           950: '#1a1c1e',
         },
-        // Theme Specific
+        // Theme Specific tokens mapped to CSS variables where appropriate
         background: {
-          light: "#f8fafc", // neutral-50
-          dark: "#0f172a", // neutral-900
+          light: 'var(--theme-background-default)',
+          dark: 'var(--theme-background-dark, #0f172a)',
           paper: {
-            light: "#ffffff",
-            dark: "#1e293b", // neutral-800
+            light: 'var(--theme-background-paper)',
+            dark: 'var(--theme-background-paper-dark, #1e293b)',
           }
         },
         border: {
-          light: "#dfe6e9", // neutral-200 (US Palette - Soothing Breeze)
-          dark: "#52595e", // neutral-700
+          light: 'var(--theme-border)',
+          dark: 'var(--theme-border-dark, #52595e)',
         },
         text: {
           primary: {
-            light: "#0f172a", // neutral-900
-            dark: "#f8fafc", // neutral-50
+            light: 'var(--theme-text-primary)',
+            dark: 'var(--theme-text-primary-dark, #f8fafc)',
           },
           secondary: {
-            light: "#64748b", // neutral-500
-            dark: "#94a3b8", // neutral-400
+            light: 'var(--theme-text-secondary)',
+            dark: 'var(--theme-text-secondary-dark, #94a3b8)',
           },
           disabled: {
-            light: "#cbd5e1", // neutral-300
-            dark: "#475569", // neutral-600
+            light: 'var(--theme-text-disabled, #cbd5e1)',
+            dark: 'var(--theme-text-disabled-dark, #475569)',
           }
         },
-        "input-bg-dark": "#1e293b", // neutral-800
+        "input-bg-dark": "var(--theme-input-bg-dark, #1e293b)",
       },
       fontFamily: {
         display: ["Inter", "sans-serif"],

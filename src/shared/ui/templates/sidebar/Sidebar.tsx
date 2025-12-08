@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/shared/lib/utils/cn';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
+import { ThemeToggle } from '@/shared/ui/atoms/theme-toggle';
 
 export type SidebarNavItem = {
   label: string;
@@ -35,6 +36,7 @@ export interface SidebarProps
   onNavigate?: (href: string) => void;
   header?: React.ReactNode;
   collapsible?: boolean;
+  showThemeToggle?: boolean;
 }
 
 export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
@@ -47,6 +49,7 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
     onNavigate,
     header,
     collapsible: _collapsible,
+    showThemeToggle = false,
     ...props
   }, ref) => {
     const [activeHref, setActiveHref] = useState<string>("");
@@ -132,19 +135,22 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
         {...props}
       >
         {header && (
-          <div className="flex items-center justify-between p-4 border-b border-neutral-200 dark:border-neutral-700">
-            {header}
-            {variant === 'collapsible' && onClose && (
-              <button
-                onClick={onClose}
-                aria-label="Close sidebar"
-                className="p-2 text-neutral-500 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-700 transition-colors"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            )}
+          <div className="flex items-center justify-between gap-3 p-4 border-b border-neutral-200 dark:border-neutral-700">
+            <div className="flex-1">{header}</div>
+            <div className="flex items-center gap-2">
+              {showThemeToggle && <ThemeToggle />}
+              {variant === 'collapsible' && onClose && (
+                <button
+                  onClick={onClose}
+                  aria-label="Close sidebar"
+                  className="p-2 text-neutral-500 rounded-lg hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-700 transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
           </div>
         )}
         <nav className="flex-1 overflow-y-auto p-4 pt-6">

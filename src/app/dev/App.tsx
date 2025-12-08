@@ -13,7 +13,8 @@ import { Badge } from '@/shared/ui/atoms/badge';
 import { Avatar } from '@/shared/ui/atoms/avatar';
 import { ToastProvider, useToast } from '@/shared/ui/organisms/toast';
 import { Sidebar, type SidebarNavItem } from '@/shared/ui/templates/sidebar';
-import { ThemeProvider, useTheme } from '@/shared/contexts/ThemeContext';
+import { ThemeProvider } from '@/shared/contexts/ThemeContext';
+import { ThemeToggle } from '@/shared/ui/atoms/theme-toggle';
 import {
   FaUser,
   FaEnvelope,
@@ -41,8 +42,6 @@ import {
   FaWindowMaximize,
   FaSquare,
   FaAlignLeft,
-  FaSun,
-  FaMoon,
 } from 'react-icons/fa';
 
 const useIsDesktop = () => {
@@ -1471,7 +1470,6 @@ function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isDesktop = useIsDesktop();
   const isSidebarOpen = isDesktop ? true : sidebarOpen;
-  const { mode, toggleTheme } = useTheme();
 
   const handleSidebarNavigate = useCallback((href: string) => {
     const targetId = href.replace('#', '');
@@ -1629,26 +1627,18 @@ function AppContent() {
         onNavigate={handleSidebarNavigate}
         className="z-50 border-r border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900"
         header={
-          <div className="flex items-center justify-between gap-3 px-4 py-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-white shadow-sm">
-                <FaShapes className="text-sm" />
-              </div>
-              <div>
-                <Typography variant="h6" className="font-bold leading-none tracking-tight text-neutral-900 dark:text-white">
-                  GaryUI
-                </Typography>
-              </div>
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-white shadow-sm">
+              <FaShapes className="text-sm" />
             </div>
-            <button
-              onClick={toggleTheme}
-              className="flex h-8 w-8 items-center justify-center text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-200 transition-colors"
-              aria-label={mode === 'light' ? '다크모드로 전환' : '라이트모드로 전환'}
-            >
-              {mode === 'light' ? <FaMoon className="h-4 w-4" /> : <FaSun className="h-4 w-4" />}
-            </button>
+            <div>
+              <Typography variant="h6" className="font-bold leading-none tracking-tight text-neutral-900 dark:text-white">
+                GaryUI
+              </Typography>
+            </div>
           </div>
         }
+        showThemeToggle={true}
       />
 
       {/* Main Content - Scrollable */}

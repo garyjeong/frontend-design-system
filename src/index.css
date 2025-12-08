@@ -10,8 +10,8 @@
   :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     
-    /* Color variables for easier usage in custom CSS */
-    /* Flat UI Colors US Palette */
+    /* Color variables for easier usage in custom CSS (runtime-overridable) */
+    /* Primary scale (defaults mirror existing primary palette) */
     --color-primary-50: #e3f2fd;
     --color-primary-100: #bbdefb;
     --color-primary-200: #90caf9;
@@ -23,6 +23,25 @@
     --color-primary-800: #3a7dc2;
     --color-primary-900: #2a6db0;
     --color-primary-950: #1a5d9e;
+
+    /* Theme-level tokens (will be overridden by ThemeProvider at runtime) */
+    --theme-primary-50: var(--color-primary-50);
+    --theme-primary-100: var(--color-primary-100);
+    --theme-primary-200: var(--color-primary-200);
+    --theme-primary-300: var(--color-primary-300);
+    --theme-primary-400: var(--color-primary-400);
+    --theme-primary-500: var(--color-primary-500);
+    --theme-primary-600: var(--color-primary-600);
+    --theme-primary-700: var(--color-primary-700);
+    --theme-primary-800: var(--color-primary-800);
+    --theme-primary-900: var(--color-primary-900);
+
+    /* Background / Text tokens */
+    --theme-background-default: #f8fafc;
+    --theme-background-paper: #ffffff;
+    --theme-text-primary: #0f172a;
+    --theme-text-secondary: #64748b;
+    --theme-border: #dfe6e9;
   }
 
   body {

@@ -45,6 +45,7 @@ React 19 + Vite + Tailwind CSS + CVA 기반의 재사용 가능한 UI 컴포넌�
 |----------|------------------------|-----------------------|-------|
 | Background Default | `bg-background-light` | `dark:bg-background-dark` | Main page background |
 | Background Paper | `bg-background-paper-light` | `dark:bg-background-paper-dark` | Cards, modals |
+| Theme Presets | `data-theme-color="purple|orange|green"` | -- | Use compact selector in Sidebar header to switch preset colors at runtime |
 | Text Primary | `text-text-primary-light` | `dark:text-text-primary-dark` | Main text content |
 | Text Secondary | `text-text-secondary-light` | `dark:text-text-secondary-dark` | Secondary text |
 
