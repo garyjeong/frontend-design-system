@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState, useCallback, ReactNode } from 'react';
 import themePresets, { ThemeColorKey, ThemePreset, ColorScale } from '@/shared/lib/themes/themeDefinitions';
+import { contrastRatio } from '@/shared/lib/accessibility/contrast';
 
 export type ThemeMode = 'light' | 'dark';
 type ThemeColor = ThemeColorKey;
@@ -62,6 +63,49 @@ const applyCustomPaletteToRoot = (palette: Partial<ColorScale>, mode: ThemeMode)
   } else {
     root.style.setProperty('--theme-background-default', 'var(--theme-background-dark, #0f172a)');
     root.style.setProperty('--theme-text-primary', '#f8fafc');
+  }
+  // compute accessible darker variant for primary-700 if needed
+  const primary500 = (palette as any)['500'] || getComputedStyle(root).getPropertyValue('--theme-primary-500') || '';
+  const normalizeHex = (hex: string) => {
+    const h = hex.trim();
+    if (h.startsWith('rgb')) return h; // leave rgb as-is
+    if (!h.startsWith('#')) return h;
+    if (h.length === 4) {
+      return '#' + h[1] + h[1] + h[2] + h[2] + h[3] + h[3];
+    }
+    return h;
+  };
+  const darkenHex = (hex: string, amount: number) => {
+    try {
+      const h = normalizeHex(hex);
+      if (h.startsWith('rgb')) return h;
+      const int = parseInt(h.slice(1), 16);
+      let r = (int >> 16) & 255;
+      let g = (int >> 8) & 255;
+      let b = int & 255;
+      r = Math.max(0, Math.floor(r * (1 - amount)));
+      g = Math.max(0, Math.floor(g * (1 - amount)));
+      b = Math.max(0, Math.floor(b * (1 - amount)));
+      const out = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+      return out;
+    } catch {
+      return hex;
+    }
+  };
+  const fg = '#ffffff';
+  let candidate = normalizeHex(primary500 as string) || '';
+  let chosen = candidate;
+  if (candidate) {
+    let ratio = contrastRatio(fg, candidate);
+    let step = 0;
+    while (ratio < 4.5 && step < 7) {
+      step += 1;
+      const amt = 0.08 * step;
+      candidate = darkenHex(candidate, amt);
+      ratio = contrastRatio(fg, candidate);
+    }
+    chosen = candidate;
+    root.style.setProperty('--theme-primary-700', chosen);
   }
 };
 
